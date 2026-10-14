@@ -1,0 +1,204 @@
+@import "tailwindcss";
+
+:root {
+  /* Luminae-inspired soft luxury — non-circular tokens */
+  --rh-ocean: #2a2724;
+  --rh-ocean-deep: #1c1a18;
+  --rh-ivory: #f2f0eb;
+  --rh-sand: #ffffff;
+  --rh-sand-deep: #e5e1d8;
+  --rh-teal: #8b7ec8;
+  --rh-teal-soft: #c4b5e0;
+  --rh-gold: #9aa8c7;
+  --rh-gold-muted: #b8c0d4;
+  --rh-ink: #1a1816;
+  --rh-ink-soft: #6b6560;
+  --rh-mist: #ebe7e0;
+  --rh-rose: #e8d5e0;
+  --rh-lavender: #ede8f5;
+  --rh-white: #ffffff;
+  --rh-error: #b42318;
+  --rh-success: #027a48;
+
+  --background: var(--rh-ivory);
+  --foreground: var(--rh-ink);
+
+  --font-display: var(--font-cormorant), "Times New Roman", serif;
+  --font-body: var(--font-outfit), system-ui, sans-serif;
+
+  --radius-xl: 2.75rem;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --nav-height: 4.25rem;
+  --section-pad-y: clamp(2.75rem, 6vw, 7rem);
+  --content-max: 72rem;
+}
+
+@media (max-width: 639px) {
+  :root {
+    --section-pad-y: 2.5rem;
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-ocean: var(--rh-ocean);
+  --color-ocean-deep: var(--rh-ocean-deep);
+  --color-ivory: var(--rh-ivory);
+  --color-sand: var(--rh-sand);
+  --color-sand-deep: var(--rh-sand-deep);
+  --color-teal: var(--rh-teal);
+  --color-teal-soft: var(--rh-teal-soft);
+  --color-gold: var(--rh-gold);
+  --color-gold-muted: var(--rh-gold-muted);
+  --color-ink: var(--rh-ink);
+  --color-ink-soft: var(--rh-ink-soft);
+  --color-mist: var(--rh-mist);
+  --color-rose: var(--rh-rose);
+  --color-lavender: var(--rh-lavender);
+  --color-error: var(--rh-error);
+  --color-success: var(--rh-success);
+  --font-sans: var(--font-body);
+  --font-serif: var(--font-display);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body);
+  font-weight: 400;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--rh-teal) 28%, transparent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--rh-teal);
+  outline-offset: 3px;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.font-display {
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.12;
+}
+
+.italic-em {
+  font-style: italic;
+  font-weight: 400;
+}
+
+.section-pad {
+  padding-block: var(--section-pad-y);
+}
+
+.container-rh {
+  width: min(100% - 2.5rem, var(--content-max));
+  margin-inline: auto;
+}
+
+@media (min-width: 768px) {
+  .container-rh {
+    width: min(100% - 3.5rem, var(--content-max));
+  }
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.card-soft {
+  background: var(--rh-sand);
+  border-radius: clamp(1.5rem, 4vw, var(--radius-xl));
+}
+
+.tag-pill {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  padding: 0.35rem 0.9rem;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: var(--rh-lavender);
+  color: var(--rh-teal);
+}
+
+.faq-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.45s var(--ease-out-expo);
+}
+
+.faq-panel[data-open="true"] {
+  grid-template-rows: 1fr;
+}
+
+.faq-panel > div {
+  overflow: hidden;
+}
+
+.hero-aurora {
+  background:
+    radial-gradient(ellipse 78% 42% at 50% 4%, #0a3d4a 0%, transparent 55%),
+    radial-gradient(ellipse 68% 48% at 48% 32%, #0d8a8a 0%, transparent 52%),
+    radial-gradient(ellipse 90% 46% at 52% 48%, #2ec4b6 0%, transparent 58%),
+    radial-gradient(ellipse 105% 48% at 50% 62%, #7ed6c1 0%, transparent 62%),
+    radial-gradient(ellipse 100% 40% at 50% 72%, #f0c9a0 0%, transparent 70%),
+    linear-gradient(
+      180deg,
+      #041820 0%,
+      #0a3540 16%,
+      #0c5c68 32%,
+      #1a9a8e 46%,
+      #6bc4b0 58%,
+      #c9e4d4 70%,
+      #ebe6dc 82%,
+      #f2f0eb 92%,
+      #f2f0eb 100%
+    );
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
