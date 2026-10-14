@@ -47,11 +47,11 @@ export function ImpactStats() {
   return (
     <section
       ref={ref}
-      className="section-pad"
+      className="section-pad bg-ivory"
       aria-labelledby="impact-heading"
     >
       <div className="container-rh">
-        <div className="text-center max-w-2xl mx-auto mb-7 sm:mb-12">
+        <div className="text-center max-w-2xl mx-auto mb-7 sm:mb-8 md:mb-9">
           <Tag>Our Impact</Tag>
           <h2
             id="impact-heading"

@@ -87,7 +87,7 @@ export const destinationOptions = [
   { value: "puerto-vallarta", label: "Puerto Vallarta" },
   { value: "orlando", label: "Orlando" },
   { value: "miami", label: "Miami Beach" },
-  { value: "caribbean", label: "Caribbean (e.g. Punta Cana)" },
+  { value: "caribbean", label: "Caribbean" },
   { value: "europe", label: "Europe" },
   { value: "other", label: "Other / not sure yet" },
 ] as const;

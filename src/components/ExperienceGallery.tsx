@@ -64,7 +64,7 @@ export function ExperienceGallery() {
     <section
       ref={ref}
       id="experiences"
-      className="section-pad bg-mist overflow-hidden"
+      className="section-pad bg-ivory overflow-hidden"
       aria-labelledby="experiences-heading"
     >
       <div className="container-rh exp-intro mb-10 md:mb-14">

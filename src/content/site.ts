@@ -438,9 +438,9 @@ export const formCopy = {
   subtitle:
     "A short guided conversation helps us understand whether vacation-club membership may fit your plans — and how a specialist should follow up.",
   steps: [
-    { id: "preferences", label: "Travel preferences" },
-    { id: "contact", label: "Contact details" },
-    { id: "consent", label: "Consent & submit" },
+    { id: "preferences", label: "Travel preferences", shortLabel: "Preferences" },
+    { id: "contact", label: "Contact details", shortLabel: "Contact" },
+    { id: "consent", label: "Consent & submit", shortLabel: "Consent" },
   ],
   privacyNotice:
     "We use the information you provide to respond to your inquiry about vacation-club membership, qualify interest, and — where you consent — communicate about relevant offers. See our privacy policy for details. Do not submit medical or health information in this form.",

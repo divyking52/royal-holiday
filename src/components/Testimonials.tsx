@@ -6,17 +6,20 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { destinations } from "@/content/site";
 import { Tag } from "@/components/ui/Tag";
+import { PlacesSwipeDeck } from "@/components/PlacesSwipeDeck";
 
 gsap.registerPlugin(ScrollTrigger);
 
 /** Destination stories — no fabricated member testimonials */
-const stories = destinations.slice(0, 3).map((d) => ({
+const stories = destinations.slice(0, 6).map((d) => ({
   id: d.id,
   name: d.name,
   role: d.region,
   image: d.image,
   alt: d.imageAlt,
 }));
+
+const desktopStories = stories.slice(0, 3);
 
 export function Testimonials() {
   const ref = useRef<HTMLElement>(null);
@@ -25,7 +28,7 @@ export function Testimonials() {
     const el = ref.current;
     if (!el) return;
     const ctx = gsap.context(() => {
-      gsap.from(".story-card", {
+      gsap.from(".story-card-desktop", {
         y: 50,
         opacity: 0,
         duration: 0.85,
@@ -41,11 +44,11 @@ export function Testimonials() {
     <section
       ref={ref}
       id="stories"
-      className="section-pad"
+      className="section-pad bg-ivory"
       aria-labelledby="stories-heading"
     >
       <div className="container-rh">
-        <div className="text-center max-w-2xl mx-auto mb-7 sm:mb-12">
+        <div className="text-center max-w-2xl mx-auto mb-7 sm:mb-8 md:mb-9">
           <Tag>Real places</Tag>
           <h2
             id="stories-heading"
@@ -60,17 +63,19 @@ export function Testimonials() {
           </p>
         </div>
 
-        <div className="flex gap-3.5 overflow-x-auto snap-x snap-mandatory pb-2 -mx-5 px-5 scrollbar-hide sm:mx-0 sm:px-0 md:grid md:grid-cols-3 md:gap-4 lg:gap-5 md:overflow-visible md:pb-0">
-          {stories.map((s) => (
+        <PlacesSwipeDeck stories={stories} />
+
+        <div className="hidden md:grid md:grid-cols-3 md:gap-4 lg:gap-5">
+          {desktopStories.map((s) => (
             <article
               key={s.id}
-              className="story-card relative aspect-[3/4] overflow-hidden rounded-[1.5rem] sm:rounded-[2rem] group shrink-0 w-[68vw] max-w-[250px] snap-center md:w-auto md:max-w-none md:shrink"
+              className="story-card-desktop relative aspect-[3/4] overflow-hidden rounded-[2rem] group"
             >
               <Image
                 src={s.image}
                 alt={s.alt}
                 fill
-                sizes="(max-width: 768px) 100vw, 33vw"
+                sizes="33vw"
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-ocean-deep/85 via-transparent to-transparent" />

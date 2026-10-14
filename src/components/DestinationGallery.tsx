@@ -55,11 +55,11 @@ export function DestinationGallery() {
     <section
       ref={sectionRef}
       id="destinations"
-      className="section-pad"
+      className="section-pad bg-ivory"
       aria-labelledby="destinations-heading"
     >
-      <div className="container-rh grid lg:grid-cols-12 gap-10 lg:gap-14 items-start">
-        <div ref={pinRef} className="lg:col-span-5 lg:pt-6">
+      <div className="container-rh grid lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+        <div ref={pinRef} className="lg:col-span-5">
           <Tag>What we offer</Tag>
           <h2
             id="destinations-heading"

@@ -209,13 +209,11 @@ export function QualificationForm() {
     }
   };
 
-  const progress = ((step + 1) / formCopy.steps.length) * 100;
-
   return (
     <section
       ref={formRef}
       id="qualify"
-      className="section-pad"
+      className="section-pad scroll-mt-24 bg-ivory"
       aria-labelledby="qualify-heading"
     >
       <div
@@ -240,21 +238,36 @@ export function QualificationForm() {
         ) : (
           <>
             <div className="mb-8" aria-hidden={false}>
-              <div className="flex justify-between text-xs uppercase tracking-[0.18em] text-ink-soft mb-3">
+              <div className="grid grid-cols-3 gap-2 sm:gap-3">
                 {formCopy.steps.map((s, i) => (
                   <span
                     key={s.id}
-                    className={cn(i === step && "text-ocean font-medium")}
+                    className={cn(
+                      "min-w-0 text-center leading-tight",
+                      i === step
+                        ? "text-ocean font-medium"
+                        : "text-ink-soft",
+                    )}
                   >
-                    {i + 1}. {s.label}
+                    <span className="block text-[10px] uppercase tracking-[0.14em] sm:hidden">
+                      {i + 1}. {s.shortLabel}
+                    </span>
+                    <span className="hidden sm:block text-xs uppercase tracking-[0.14em]">
+                      {i + 1}. {s.label}
+                    </span>
+                    <span
+                      className={cn(
+                        "mt-2 block h-px w-full",
+                        i === step
+                          ? "bg-ocean"
+                          : i < step
+                            ? "bg-ocean/35"
+                            : "bg-sand-deep",
+                      )}
+                      aria-hidden
+                    />
                   </span>
                 ))}
-              </div>
-              <div className="h-px bg-sand-deep overflow-hidden">
-                <div
-                  className="progress-bar h-full bg-ocean"
-                  style={{ transform: `scaleX(${progress / 100})` }}
-                />
               </div>
             </div>
 
@@ -418,7 +431,7 @@ function StepPreferences({
                 aria-pressed={selected}
                 onClick={() => onToggleDestination(opt.value)}
                 className={cn(
-                  "px-4 py-2 text-sm border will-change-transform",
+                  "px-3.5 py-2 text-[13px] sm:text-sm sm:px-4 border will-change-transform whitespace-nowrap",
                   selected
                     ? "border-ocean bg-ocean text-white rounded-full"
                     : "border-sand-deep text-ink rounded-full",

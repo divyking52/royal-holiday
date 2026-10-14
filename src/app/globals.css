@@ -29,7 +29,7 @@
   --radius-xl: 2.75rem;
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --nav-height: 4.25rem;
-  --section-pad-y: clamp(2.75rem, 6vw, 7rem);
+  --section-pad-y: clamp(2.5rem, 4vw, 4.5rem);
   --content-max: 72rem;
 }
 
@@ -175,21 +175,21 @@ img {
 
 .hero-aurora {
   background:
-    radial-gradient(ellipse 78% 42% at 50% 4%, #0a3d4a 0%, transparent 55%),
-    radial-gradient(ellipse 68% 48% at 48% 32%, #0d8a8a 0%, transparent 52%),
-    radial-gradient(ellipse 90% 46% at 52% 48%, #2ec4b6 0%, transparent 58%),
-    radial-gradient(ellipse 105% 48% at 50% 62%, #7ed6c1 0%, transparent 62%),
-    radial-gradient(ellipse 100% 40% at 50% 72%, #f0c9a0 0%, transparent 70%),
+    radial-gradient(ellipse 78% 36% at 50% 2%, #0a3d4a 0%, transparent 55%),
+    radial-gradient(ellipse 68% 42% at 48% 28%, #0d8a8a 0%, transparent 52%),
+    radial-gradient(ellipse 90% 40% at 52% 44%, #2ec4b6 0%, transparent 58%),
+    radial-gradient(ellipse 105% 42% at 50% 58%, #7ed6c1 0%, transparent 62%),
+    radial-gradient(ellipse 100% 36% at 50% 70%, #f0c9a0 0%, transparent 70%),
     linear-gradient(
       180deg,
       #041820 0%,
-      #0a3540 16%,
-      #0c5c68 32%,
-      #1a9a8e 46%,
-      #6bc4b0 58%,
+      #0a3540 14%,
+      #0c5c68 28%,
+      #1a9a8e 42%,
+      #6bc4b0 56%,
       #c9e4d4 70%,
-      #ebe6dc 82%,
-      #f2f0eb 92%,
+      #ebe6dc 86%,
+      #f2f0eb 96%,
       #f2f0eb 100%
     );
 }

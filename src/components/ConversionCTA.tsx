@@ -68,11 +68,11 @@ export function ConversionCTA() {
     <section
       ref={ref}
       id="conversation"
-      className="section-pad"
+      className="section-pad bg-ivory"
       aria-labelledby="conversion-heading"
     >
       <div className="container-rh">
-        <div className="card-soft overflow-hidden px-5 pt-9 pb-8 sm:px-6 sm:pt-12 sm:pb-10 md:px-12 md:pt-16 md:pb-14 text-center shadow-sm">
+        <div className="card-soft overflow-hidden px-5 pt-9 pb-8 sm:px-6 sm:pt-10 sm:pb-10 md:px-12 md:pt-12 md:pb-12 text-center shadow-sm">
           <div className="relative mx-auto mb-7 sm:mb-10 flex h-36 sm:h-56 md:h-72 w-full max-w-md items-end justify-center">
             <div className="fan-card fan-left absolute left-[10%] bottom-1 h-28 w-20 sm:h-44 sm:w-32 md:h-56 md:w-40 overflow-hidden rounded-[1.15rem] sm:rounded-[1.5rem] origin-bottom">
               <Image src={fan[0]} alt="" fill className="object-cover" sizes="160px" />

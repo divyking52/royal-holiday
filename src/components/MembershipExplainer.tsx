@@ -124,13 +124,13 @@ export function MembershipExplainer() {
     <section
       ref={sectionRef}
       id="membership"
-      className="section-pad bg-mist/60"
+      className="section-pad bg-ivory"
       aria-labelledby="how-heading"
     >
       <div className="container-rh">
         <div
           data-mem-reveal
-          className="text-center max-w-2xl mx-auto mb-8 sm:mb-12 md:mb-16"
+          className="text-center max-w-2xl mx-auto mb-8 sm:mb-10 md:mb-10"
         >
           <Tag>How it works</Tag>
           <h2
@@ -146,7 +146,7 @@ export function MembershipExplainer() {
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-center">
+        <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-8 items-center">
           <div
             ref={imageRef}
             data-mem-reveal

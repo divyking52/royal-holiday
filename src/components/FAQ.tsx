@@ -17,11 +17,11 @@ export function FAQ() {
     <section
       ref={ref}
       id="faq"
-      className="section-pad"
+      className="section-pad bg-ivory"
       aria-labelledby="faq-heading"
     >
       <div className="container-rh max-w-3xl">
-        <div data-reveal className="text-center mb-7 sm:mb-10 md:mb-12">
+        <div data-reveal className="text-center mb-7 sm:mb-8 md:mb-9">
           <Tag>FAQ</Tag>
           <h2
             id="faq-heading"

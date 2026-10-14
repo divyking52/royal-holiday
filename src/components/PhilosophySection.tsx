@@ -14,7 +14,8 @@ export function PhilosophySection() {
   return (
     <section
       ref={ref}
-      className="relative bg-ivory pt-4 sm:pt-10 md:pt-14 pb-5 md:pb-8"
+      id="philosophy"
+      className="relative scroll-mt-24 bg-ivory pt-14 sm:pt-10 md:pt-8 pb-6 md:pb-8"
       aria-labelledby="philosophy-heading"
     >
       <div className="container-rh relative z-[1]">

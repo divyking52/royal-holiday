@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Royal Holiday | Vacation-Club Membership</title>
+  <meta name="description" content="Discover Royal Holiday vacation-club membership. Explore destinations, understand Holiday Credits, and speak with a vacation specialist." />
+  <link rel="icon" href="https://admin.storebox.ai/media/f3d54a7d-a615-4245-a1e7-07c89a274444/038e9184-0857-4882-8dd3-0ccbb0cde2d2/favicon.svg" type="image/svg+xml" />
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js"></script>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400&family=Outfit:wght@400;500;600&display=swap");
+
+    :root {
+      --ocean: #2a2724;
+      --ocean-deep: #1c1a18;
+      --ivory: #f2f0eb;
+      --sand: #ffffff;
+      --sand-deep: #e5e1d8;
+      --teal: #8b7ec8;
+      --lavender: #ede8f5;
+      --ink: #1a1816;
+      --ink-soft: #6b6560;
+      --mist: #ebe7e0;
+      --error: #b42318;
+      --success: #027a48;
+      --display: "Cormorant Garamond", "Times New Roman", serif;
+      --body: Outfit, system-ui, sans-serif;
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+      --section-pad-y: clamp(2.5rem, 4vw, 4.5rem);
+      --nav-height: 4.25rem;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--ivory);
+      color: var(--ink);
+      font-family: var(--body);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; }
+    button, input, select { font-family: inherit; }
+    .container { width: min(100% - 2.5rem, 72rem); margin-inline: auto; }
+    .display { font-family: var(--display); font-weight: 500; letter-spacing: -0.02em; line-height: 1.12; }
+    em { font-style: italic; font-weight: 400; }
+    .section { padding-block: var(--section-pad-y, clamp(2.5rem, 4vw, 4.5rem)); background: var(--ivory); }
+    .section-title { font-size: clamp(1.65rem, 4.5vw, 3rem); }
+    .tag {
+      display: inline-flex; align-items: center; border-radius: 9999px;
+      padding: 0.35rem 0.9rem; font-size: 0.7rem; font-weight: 500;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      background: var(--lavender); color: var(--teal);
+    }
+    .card { background: var(--sand); border-radius: clamp(1.5rem, 4vw, 2.75rem); }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+      border-radius: 9999px; font-weight: 500; letter-spacing: 0.02em; text-decoration: none;
+      border: 0; cursor: pointer; padding: 0.85rem 1.6rem; font-size: 0.95rem;
+    }
+    .btn-light { background: #f5f3ef; color: var(--ink); }
+    .btn-dark { background: var(--ocean); color: #fff; }
+    .btn-on-dark { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.4); }
+    .btn-ghost { background: transparent; color: var(--ink); }
+    .btn:disabled { opacity: 0.4; pointer-events: none; }
+
+    /* Nav */
+    .nav-wrap { position: fixed; top: 0.85rem; inset-inline: 0; z-index: 50; display: flex; justify-content: center; padding: 0 0.75rem; pointer-events: none; }
+    .nav {
+      pointer-events: auto; display: flex; width: 100%; max-width: 64rem; align-items: center;
+      justify-content: space-between; gap: 0.75rem; border-radius: 9999px;
+      background: rgba(28,26,24,0.95); color: #fff; padding: 0.5rem 1rem;
+      box-shadow: 0 10px 40px rgba(28,26,24,0.25); backdrop-filter: blur(12px);
+    }
+    .nav-brand { font-weight: 600; text-decoration: none; font-size: 1.05rem; }
+    .nav-links { display: none; list-style: none; gap: 1.75rem; margin: 0; padding: 0; }
+    .nav-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.9rem; }
+    .nav-links a:hover { color: #fff; }
+    .nav-cta { display: none; }
+    .menu-btn { background: none; border: 0; color: #fff; padding: 0.4rem; cursor: pointer; }
+    .mobile-panel {
+      display: none; position: fixed; inset: 4.5rem 0.75rem 0.75rem; z-index: 49;
+      background: var(--ocean-deep); color: #fff; border-radius: 1.75rem; padding: 1.5rem;
+      flex-direction: column;
+    }
+    .mobile-panel.open { display: flex; }
+    .mobile-panel a { display: block; font-family: var(--display); font-size: 1.6rem; padding: 0.6rem 0; text-decoration: none; }
+    body.menu-open { overflow: hidden; }
+
+    /* Hero */
+    .hero { position: relative; min-height: 100svh; overflow: hidden; color: #fff; }
+    .hero-aurora {
+      position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 78% 36% at 50% 2%, #0a3d4a 0%, transparent 55%),
+        radial-gradient(ellipse 68% 42% at 48% 28%, #0d8a8a 0%, transparent 52%),
+        radial-gradient(ellipse 90% 40% at 52% 44%, #2ec4b6 0%, transparent 58%),
+        radial-gradient(ellipse 105% 42% at 50% 58%, #7ed6c1 0%, transparent 62%),
+        radial-gradient(ellipse 100% 36% at 50% 70%, #f0c9a0 0%, transparent 70%),
+        linear-gradient(180deg, #041820 0%, #0a3540 14%, #0c5c68 28%, #1a9a8e 42%, #6bc4b0 56%, #c9e4d4 70%, #ebe6dc 86%, #f2f0eb 100%);
+    }
+    .hero-inner { position: relative; display: flex; min-height: 100svh; flex-direction: column; padding: 5rem 0 1.5rem; text-align: center; }
+    .badge {
+      margin: 0 auto 1.25rem; display: inline-flex; align-items: center; gap: 0.6rem;
+      border-radius: 9999px; border: 1px solid rgba(255,255,255,0.15); background: rgba(0,0,0,0.2);
+      padding: 0.35rem 0.75rem; backdrop-filter: blur(10px);
+    }
+    .avatars { display: flex; }
+    .avatars span { width: 1.6rem; height: 1.6rem; border-radius: 50%; overflow: hidden; border: 1px solid rgba(255,255,255,0.4); margin-left: -0.45rem; }
+    .avatars span:first-child { margin-left: 0; }
+    .avatars img { width: 100%; height: 100%; object-fit: cover; }
+    .badge-text { font-size: 10px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; }
+    .hero h1 { font-size: clamp(2.15rem, 5.5vw, 4.5rem); max-width: 14ch; margin: 0 auto; }
+    .hero-sub { margin: 1.1rem auto 0; max-width: 20.5rem; color: rgba(255,255,255,0.78); font-size: 0.9rem; }
+    .hero-cta { margin-top: 1.5rem; display: flex; flex-direction: column; align-items: center; gap: 0.75rem; }
+    .hero-cta .btn { width: min(100%, 20.5rem); }
+    .text-link { color: rgba(255,255,255,0.9); font-size: 0.8rem; letter-spacing: 0.06em; text-decoration: none; }
+    .film-wrap { margin-top: auto; padding-top: 1.75rem; overflow: hidden;
+      -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+      mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+    }
+    .film {
+      display: flex; width: max-content; gap: 0.85rem; padding: 0.75rem 0;
+      will-change: transform;
+    }
+    @keyframes marquee { to { transform: translateX(-50%); } }
+    .film-card { width: 230px; height: 168px; border-radius: 1.35rem; overflow: hidden; flex-shrink: 0; box-shadow: 0 18px 40px rgba(4,6,18,0.28); }
+    .film-card img { width: 100%; height: 100%; object-fit: cover; }
+    .hero-title span { display: block; }
+    .scroll-cue { margin: 1rem auto 0; display: flex; flex-direction: column; align-items: center; gap: 0.3rem; color: rgba(107,101,96,0.85); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; text-decoration: none; }
+    .scroll-cue span { display: inline-block; animation: bounce 1.4s ease-in-out infinite; }
+    @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
+    .progress { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 80; pointer-events: none; }
+    .progress i { display: block; height: 100%; width: 100%; transform: scaleX(0); transform-origin: left center; background: linear-gradient(90deg, #8b7ec8, #2a2724, #9aa8c7); }
+
+    /* Philosophy */
+    #philosophy { padding-top: 3.5rem; }
+    .split { overflow: hidden; box-shadow: 0 28px 70px rgba(28,26,24,0.11); }
+    .split-grid { display: grid; }
+    .split-copy { padding: 1.5rem; }
+    .split-copy h2 { font-size: clamp(1.6rem, 3.2vw, 2.75rem); margin: 1rem 0 0; }
+    .split-copy p { color: var(--ink-soft); font-size: 0.95rem; max-width: 28rem; }
+    .split-media { position: relative; min-height: 200px; padding: 0.75rem; }
+    .split-media-inner { position: relative; height: 100%; min-height: 180px; overflow: hidden; border-radius: 1.35rem; }
+    .split-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .chip { position: absolute; bottom: 0.85rem; left: 0.85rem; right: 0.85rem; display: inline-flex; max-width: 20rem;
+      border-radius: 9999px; background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.3);
+      padding: 0.5rem 0.85rem; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #fff; }
+    .note { text-align: center; font-size: 0.75rem; color: rgba(107,101,96,0.8); }
+
+    /* Stats */
+    .center { text-align: center; max-width: 40rem; margin: 0 auto 1.75rem; }
+    .stats { display: flex; gap: 0.75rem; overflow-x: auto; padding-bottom: 0.25rem; scroll-snap-type: x mandatory; }
+    .stat { flex: 0 0 78%; max-width: 260px; scroll-snap-align: center; padding: 1.25rem; text-align: center; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+    .stat b { font-family: var(--display); font-size: clamp(2.25rem, 5vw, 3.75rem); font-weight: 500; display: block; }
+
+    /* Destinations */
+    .dest-copy { margin-bottom: 1.75rem; }
+    .dest-copy h2 { margin: 1rem 0 0; }
+    .dest-copy .lede { color: var(--ink-soft); margin-top: 0.9rem; max-width: 28rem; }
+    .dest-copy .aside { text-align: left; margin-top: 0.75rem; max-width: 28rem; }
+    .dest-faces { display: none; align-items: center; gap: 0.75rem; margin-top: 2rem; }
+    .dest-faces .avatars span { width: 2.25rem; height: 2.25rem; border: 2px solid var(--ivory); }
+    .dest-faces p { margin: 0; font-size: 0.9rem; color: var(--ink-soft); }
+    .dest-cta { margin-top: 1.5rem; }
+    .dest-list {
+      display: flex; gap: 0.875rem; overflow-x: auto; scroll-snap-type: x mandatory;
+      margin-inline: -1.25rem; padding: 0 1.25rem 0.5rem;
+      -ms-overflow-style: none; scrollbar-width: none;
+    }
+    .dest-list::-webkit-scrollbar { display: none; }
+    .dest-card {
+      flex: 0 0 80vw; width: 80vw; max-width: 300px; scroll-snap-align: center;
+      overflow: hidden; cursor: pointer; border: 0; text-align: left;
+      font: inherit; color: inherit; padding: 0; display: block; background: var(--sand);
+    }
+    .dest-card .media {
+      position: relative; aspect-ratio: 16/10; margin: 0.75rem; border-radius: 1.35rem; overflow: hidden;
+    }
+    .dest-card .media img {
+      position: absolute; inset: 0; width: 100%; height: 100%; max-width: none;
+      object-fit: cover; transition: transform 0.7s ease;
+    }
+    .dest-card:hover .media img { transform: scale(1.05); }
+    .dest-card .pad { padding: 0 1rem 1.25rem; }
+    .dest-card h3 { margin: 0; font-size: 1.25rem; }
+    .dest-card .blurb { color: var(--ink-soft); font-size: 0.9rem; margin: 0.5rem 0 0; }
+    .dest-pills { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+    .pill { display: inline-block; border-radius: 9999px; background: var(--mist); color: var(--ink-soft); font-size: 0.75rem; padding: 0.35rem 0.75rem; }
+    .pill-soft { background: var(--lavender); color: var(--teal); }
+
+    /* Membership */
+    .mem-media { position: relative; aspect-ratio: 16/10; max-height: 34vh; overflow: hidden; border-radius: 1.5rem; background: var(--mist); }
+    .mem-media img { width: 100%; height: 100%; object-fit: cover; }
+    .mem-copy { margin-top: 1.25rem; }
+    .mem-copy h3 { font-size: clamp(1.35rem, 3vw, 2.25rem); margin: 0.25rem 0; }
+    .tabs { display: flex; gap: 0.5rem; margin-top: 2rem; }
+    .tab {
+      position: relative; flex: 1; height: 1.5rem; border: 0; background: transparent;
+      cursor: pointer; padding: 0;
+    }
+    .tab-track {
+      position: absolute; left: 0; right: 0; top: 50%; height: 0.35rem;
+      border-radius: 99px; background: var(--sand-deep); transform: translateY(-50%); overflow: hidden;
+    }
+    .tab-fill {
+      display: block; height: 100%; width: 100%; background: var(--ocean);
+      transform: scaleX(0); transform-origin: left center;
+    }
+
+    /* Stories swipe */
+    .deck { position: relative; height: 420px; max-width: 300px; margin: 0 auto; perspective: 1100px; touch-action: none; user-select: none; }
+    .story-card {
+      position: absolute; inset-inline: 0; top: 0; margin: 0 auto; width: 86%; max-width: 250px; height: 380px;
+      overflow: hidden; border-radius: 1.6rem; box-shadow: 0 24px 50px rgba(28,26,24,0.28);
+      transform-style: preserve-3d; backface-visibility: hidden;
+    }
+    .story-card img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+    .story-cap { position: absolute; inset: auto 0 0; padding: 1.25rem; color: #fff; background: linear-gradient(to top, rgba(28,26,24,0.9), transparent); }
+    .story-cap h3 { margin: 0; font-size: 1.6rem; }
+    .story-cap p { margin: 0.25rem 0 0; font-size: 0.9rem; opacity: 0.85; }
+    .dots { display: flex; gap: 0.35rem; justify-content: center; margin-top: 0.5rem; }
+    .dot { width: 0.35rem; height: 0.35rem; border-radius: 99px; background: var(--sand-deep); }
+    .dot.on { width: 1.25rem; background: var(--ocean); }
+    .desktop-stories { display: none; }
+
+    /* FAQ */
+    .faq-item { border-radius: 1.75rem; background: var(--sand); box-shadow: 0 1px 2px rgba(0,0,0,0.04); padding: 0 1.25rem; }
+    .faq-item + .faq-item { margin-top: 0.75rem; }
+    .faq-item button { width: 100%; display: flex; justify-content: space-between; gap: 1rem; align-items: center; background: none; border: 0; padding: 1.1rem 0; text-align: left; cursor: pointer; font-size: 0.95rem; font-weight: 500; }
+    .faq-icon { flex-shrink: 0; background: var(--mist); border-radius: 50%; width: 1.7rem; height: 1.7rem; display: grid; place-items: center; color: var(--ink-soft); }
+    .faq-panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.45s var(--ease); color: var(--ink-soft); font-size: 0.95rem; }
+    .faq-item.open .faq-panel { grid-template-rows: 1fr; }
+    .faq-panel > div { overflow: hidden; padding-bottom: 0; }
+    .faq-item.open .faq-panel > div { padding-bottom: 1.1rem; }
+
+    /* CTA */
+    .cta-card { overflow: hidden; padding: 2.25rem 1.25rem; text-align: center; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+    .fan { position: relative; height: 9rem; max-width: 22rem; margin: 0 auto 1.5rem; }
+    .fan img { position: absolute; bottom: 0; width: 5.5rem; height: 7.5rem; object-fit: cover; border-radius: 1.15rem; }
+    .fan img:nth-child(1) { left: 12%; }
+    .fan img:nth-child(2) { left: 50%; margin-left: -3.1rem; z-index: 2; width: 6.2rem; height: 8.2rem; box-shadow: 0 12px 30px rgba(0,0,0,0.2); }
+    .fan img:nth-child(3) { right: 12%; }
+
+    /* Form */
+    .form-card { max-width: 48rem; margin-inline: auto; padding: 2rem 1.25rem; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-bottom: 2rem; }
+    .step-lab { text-align: center; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); }
+    .step-lab.on { color: var(--ocean); font-weight: 500; }
+    .step-lab i { display: block; height: 1px; margin-top: 0.5rem; background: var(--sand-deep); font-style: normal; }
+    .step-lab.on i { background: var(--ocean); }
+    .chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .chip-btn { border: 1px solid var(--sand-deep); background: #fff; border-radius: 9999px; padding: 0.5rem 0.9rem; font-size: 13px; cursor: pointer; }
+    .chip-btn.on { background: var(--ocean); color: #fff; border-color: var(--ocean); }
+    label { display: block; font-size: 0.9rem; font-weight: 500; margin: 1.25rem 0 0.45rem; }
+    select, input[type="text"], input[type="email"], input[type="tel"] {
+      width: 100%; border-radius: 1rem; border: 1px solid var(--sand-deep); background: rgba(235,231,224,0.5);
+      padding: 0.75rem 1rem; outline: none;
+    }
+    .check { display: flex; gap: 0.7rem; align-items: flex-start; margin: 0.85rem 0; font-size: 0.9rem; }
+    .form-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 2rem; gap: 1rem; }
+    .pane { display: none; }
+    .pane.on { display: block; }
+    #qualifyForm { overflow: hidden; }
+    .success { border-radius: 1.75rem; background: rgba(237,232,245,0.5); padding: 2rem; }
+    .err { color: var(--error); font-size: 0.85rem; margin-top: 0.35rem; }
+
+    /* Footer */
+    footer { padding: 0.5rem 0 1.5rem; background: var(--ivory); }
+    .foot { overflow: hidden; background: var(--ocean-deep); color: #fff; border-radius: 1.75rem; box-shadow: 0 24px 60px rgba(28,26,24,0.18); }
+    .foot-hero { position: relative; height: 15rem; }
+    .foot-hero img { width: 100%; height: 100%; object-fit: cover; }
+    .foot-hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, var(--ocean-deep), rgba(28,26,24,0.4), rgba(0,0,0,0.15)); }
+    .foot-hero-copy { position: absolute; inset: auto 0 0; z-index: 1; padding: 0 1.5rem 1.25rem; }
+    .foot-hero-copy h2 { margin: 0; font-size: 2rem; }
+    .foot-body { padding: 1.5rem 1.5rem 2rem; }
+    .foot-links { display: flex; flex-wrap: wrap; gap: 0.75rem 1.5rem; font-size: 0.9rem; color: rgba(255,255,255,0.7); }
+    .foot-links a { text-decoration: none; }
+    .legal { margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.75rem; color: rgba(255,255,255,0.45); }
+
+    .cookie {
+      position: fixed; bottom: 1rem; right: 1rem; left: auto; z-index: 40; display: none;
+      width: min(calc(100% - 2rem), 22rem);
+      background: var(--ocean-deep); color: #fff; border-radius: 1.25rem; padding: 1rem 1.15rem;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.25);
+    }
+    .cookie.show { display: block; }
+
+    @media (min-width: 640px) {
+      .hero-cta { flex-direction: row; justify-content: center; }
+      .hero-cta .btn { width: auto; }
+      .hero h1 { max-width: none; }
+      .hero-sub { max-width: 28rem; font-size: 1.125rem; }
+      .text-link { display: none; }
+      .sm-btn { display: inline-flex !important; }
+      .film-card { width: 300px; height: 210px; }
+      .split-copy { padding: 2.5rem; }
+      .split-media { min-height: 340px; }
+      .stats { display: grid; grid-template-columns: repeat(3, 1fr); overflow: visible; gap: 1.25rem; }
+      .stat { max-width: none; flex: none; padding: 2rem; }
+      .dest-list { margin-inline: 0; padding: 0; }
+      .dest-card .media { margin: 1rem; aspect-ratio: 16/9; border-radius: 1.5rem; }
+      .dest-card h3 { font-size: 1.5rem; }
+      .dest-card .pad { padding: 0 1.25rem 1.5rem; }
+      .dest-faces { display: flex; }
+      .cta-card { padding: 2.5rem 1.5rem; }
+      .form-card { padding: 2.5rem 1.5rem; }
+    }
+    @media (min-width: 768px) {
+      .container { width: min(100% - 3.5rem, 72rem); }
+      .nav-links { display: flex; }
+      .nav-cta { display: inline-flex; }
+      .menu-btn { display: none; }
+      .hero { min-height: 0; }
+      .hero-inner { min-height: 0; padding-top: 6rem; }
+      .film-card { width: 340px; height: 240px; }
+      .split-copy { padding: 3rem; }
+      .split-media { min-height: 420px; }
+      .stat { padding: 2.5rem; }
+      .dest-card h3 { font-size: 1.875rem; }
+      .dest-card .blurb { font-size: 1rem; }
+      .deck-wrap { display: none; }
+      .desktop-stories { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+      .desktop-stories article { position: relative; aspect-ratio: 3/4; overflow: hidden; border-radius: 2rem; }
+      .desktop-stories img { width: 100%; height: 100%; object-fit: cover; }
+      .cta-card { padding: 3rem 2.5rem; }
+      .form-card { padding: 3rem 2.5rem; }
+    }
+    @media (min-width: 1024px) {
+      .split-grid { grid-template-columns: 1fr 1fr; }
+      .split-copy { padding: 3.5rem; }
+      .split-media { min-height: 420px; }
+      .mem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center; }
+      .mem-media { max-height: 70vh; aspect-ratio: 4/5; }
+      .dest-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 2.5rem; align-items: start; }
+      .dest-copy { margin-bottom: 0; position: sticky; top: 6rem; }
+      .dest-list { display: flex; flex-direction: column; gap: 1.25rem; overflow: visible; scroll-snap-type: none; }
+      .dest-card { width: auto; max-width: none; flex: none; }
+      .short { display: none; }
+      .full { display: block !important; }
+    }
+    .full { display: none; }
+    .hide-sm { display: none; }
+    @media (min-width: 640px) { .hide-sm { display: inline-flex; } .show-sm-only { display: none; } }
+    @media (prefers-reduced-motion: reduce) {
+      .scroll-cue span { animation: none; }
+      .film { animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="progress" id="progress" aria-hidden="true"><i></i></div>
+  <header class="nav-wrap">
+    <nav class="nav" aria-label="Primary">
+      <a class="nav-brand" href="#top">Royal Holiday</a>
+      <ul class="nav-links">
+        <li><a href="#destinations">Destinations</a></li>
+        <li><a href="#membership">How it works</a></li>
+        <li><a href="#stories">Stories</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+      <a class="btn btn-light nav-cta" href="#qualify">Speak With a Specialist</a>
+      <button class="menu-btn" type="button" id="menuBtn" aria-label="Open menu">☰</button>
+    </nav>
+  </header>
+  <div class="mobile-panel" id="mobilePanel">
+    <a href="#destinations">Destinations</a>
+    <a href="#membership">How it works</a>
+    <a href="#stories">Stories</a>
+    <a href="#faq">FAQ</a>
+    <a class="btn btn-light" href="#qualify" style="margin-top:auto;">Speak With a Vacation Specialist</a>
+  </div>
+
+  <main>
+    <section class="hero" id="top">
+      <div class="hero-aurora hero-aurora-layer"></div>
+      <div class="hero-inner">
+        <div class="container">
+          <div class="badge hero-badge">
+            <span class="avatars">
+              <span><img src="https://admin.storebox.ai/media/f3d54a7d-a615-4245-a1e7-07c89a274444/9c3b141e-9676-4b57-a200-d5404d5cc440/caribbean.jpg" alt="" /></span>
+              <span><img src="https://admin.storebox.ai/media/f3d54a7d-a615-4245-a1e7-07c89a274444/82efbe43-0300-4285-9e12-70b687d1e829/water.jpg" alt="" /></span>
+              <span><img src="https://admin.storebox.ai/media/f3d54a7d-a615-4245-a1e7-07c89a274444/4264013f-8447-4cb3-9c4b-8d988c1d21b9/beach.jpg" alt="" /></span>
+            </span>
+            <span class="badge-text">Vacation club · Est. 1992</span>
+          </div>
+          <h1 class="display hero-title"><span>Quiet the Noise.</span><span>Make the world <em>part of your life</em></span></h1>
+          <p class="hero-sub">A haven for travelers seeking clarity on vacation-club membership — destinations, Holiday Credits, and options that fit how you travel.</p>
+          <div class="hero-cta">
+            <a class="btn btn-light" href="#membership">Explore Vacation Ownership</a>
+            <a class="text-link show-sm-only" href="#qualify">Speak With a Vacation Specialist</a>
+            <a class="btn btn-on-dark hide-sm" href="#qualify">Speak With a Vacation Specialist</a>
+          </div>
+        </div>
+        <div class="film-wrap">
+          <div class="film" id="film">
+            <!-- duplicated in JS -->
+          </div>
+        </div>
+        <a class="scroll-cue hero-scroll" href="#philosophy">Scroll to explore <span>▾</span></a>
+      </div>
+    </section>
+
+    <section id="philosophy" class="section">
+      <div class="container">
+        <article class="card split" data-reveal>
+          <div class="split-grid">
+            <div class="split-copy">
+              <span class="tag">Our philosophy</span>
+              <h2 class="display">Membership is not a destination — it's a <em>practice</em> of travel.</h2>
+              <p>Royal Holiday uses Holiday Credits so you can plan getaways across participating destinations — subject to availability, membership terms, and reservation rules.</p>
+              <a class="btn btn-dark" href="#membership" style="margin-top:1.25rem;">Explore Vacation Ownership</a>
+            </div>
+            <div class="split-media">
+              <div class="split-media-inner">
+                <img src="https://admin.storebox.ai/media/f3d54a7d-a615-4245-a1e7-07c89a274444/435ec0d0-51b1-4a11-bc4e-bf7fb49c828f/pool-sea.jpg" alt="Luxury resort pool overlooking the sea" />
+                <div class="chip">Access participating destinations worldwide*</div>
+              </div>
+            </div>
+          </div>
+        </article>
+        <p class="note">*Availability and inventory vary by membership and destination.</p>
+      </div>
+    </section>
+
+    <section class="section" id="impact">
+      <div class="container">
+        <div class="center" data-reveal>
+          <span class="tag">Our Impact</span>
+          <h2 class="display section-title">Numbers that speak to the <em>journey</em></h2>
+          <p style="color:var(--ink-soft);">Factual markers from public Royal Holiday materials — not invented conversion claims.</p>
+        </div>
+        <div class="stats">
+          <article class="card stat"><b>180+</b><p>Destinations referenced in public materials</p><small style="color:var(--ink-soft);">Confirm current network for U.S. campaigns</small></article>
+          <article class="card stat"><b>14</b><p>Park Royal Hotels &amp; Resorts properties listed publicly</p><small style="color:var(--ink-soft);">Mexico, U.S., Puerto Rico, Argentina</small></article>
+          <article class="card stat"><b>1992</b><p>Year Royal Holiday was established</p><small style="color:var(--ink-soft);">Geneva, Switzerland</small></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="destinations" style="scroll-margin-top:6rem;">
+      <div class="container dest-grid">
+        <div class="dest-copy" id="destPin">
+          <span class="tag">What we offer</span>
+          <h2 class="display section-title">Destinations designed for <em>your next escape</em></h2>
+          <p class="lede">Explore participating destinations associated with Royal Holiday vacations. Availability, seasons, and reservation rules vary by membership and destination.</p>
+          <p class="note aside">Destination details below reference publicly listed Park Royal Hotels &amp; Resorts properties and popular membership travel regions.</p>
+          <div class="dest-faces">
+            <span class="avatars">
+              <span><img src="https://admin.storebox.ai/media/f3d54a7d-a615-4245-a1e7-07c89a274444/9c3b141e-9676-4b57-a200-d5404d5cc440/caribbean.jpg" alt="" /></span>
+              <span><img src="https://admin.storebox.ai/media/f3d54a7d-a615-4245-a1e7-07c89a274444/82efbe43-0300-4285-9e12-70b687d1e829/water.jpg" alt="" /></span>
+              <span><img src="https://admin.storebox.ai/media/f3d54a7d-a615-4245-a1e7-07c89a274444/4264013f-8447-4cb3-9c4b-8d988c1d21b9/beach.jpg" alt="" /></span>
+            </span>
+            <p>Explore participating destinations — then speak with a specialist.</p>
+          </div>
+          <a class="btn btn-dark dest-cta" href="#qualify">Begin your journey</a>
+        </div>
+        <div class="dest-list" id="destList"></div>
+      </div>
+    </section>
+
+    <section class="section" id="membership">
+      <div class="container">
+        <div class="center">
+          <span class="tag">How it works</span>
+          <h2 class="display section-title">Your path to <em>vacation ownership clarity</em></h2>
+          <p style="color:var(--ink-soft);">A sanctuary for travelers seeking clear information — not pressure — about vacation-club membership.</p>
+        </div>
+        <div class="mem-grid">
+          <div class="mem-media"><img id="memImg" src="https://admin.storebox.ai/media/f3d54a7d-a615-4245-a1e7-07c89a274444/abac8a57-a07c-42aa-8099-03b6ad9fb08b/pool.jpg" alt="Resort experience" /></div>
+          <div class="mem-copy" id="memCopy">
+            <p style="font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--teal);" id="memNum">Step 1</p>
+            <h3 class="display" id="memTitle">Explore membership options</h3>
+            <p style="color:var(--ink-soft);" id="memBody">Learn how vacation-club membership can fit the way you travel — destinations, trip frequency, and travel party size.</p>
+            <div class="tabs" role="tablist">
+              <button class="tab on" data-i="0" aria-label="Step 1"><span class="tab-track"><span class="tab-fill"></span></span></button>
+              <button class="tab" data-i="1" aria-label="Step 2"><span class="tab-track"><span class="tab-fill"></span></span></button>
+              <button class="tab" data-i="2" aria-label="Step 3"><span class="tab-track"><span class="tab-fill"></span></span></button>
+            </div>
+            <p style="margin-top:1.5rem;font-size:0.8rem;color:var(--ink-soft);border-left:2px solid rgba(139,126,200,0.4);padding-left:0.9rem;">Membership terms vary. This page does not guarantee availability, savings, unlimited travel, or specific benefits.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="stories">
+      <div class="container">
+        <div class="center">
+          <span class="tag">Real places</span>
+          <h2 class="display section-title">Destinations that start the <em>conversation</em></h2>
+          <p style="color:var(--ink-soft);">Member testimonials are pending approval. Until then, explore verified destination highlights.</p>
+        </div>
+        <div class="deck-wrap">
+          <div class="deck" id="deck" aria-label="Destination stories. Swipe to browse."></div>
+          <p class="note" style="margin-top:0.75rem;">Swipe to explore</p>
+          <div class="dots" id="dots"></div>
+        </div>
+        <div class="desktop-stories" id="deskStories"></div>
+        <p style="text-align:center;margin-top:1.5rem;"><span class="tag">Pending approval — member stories</span></p>
+      </div>
+    </section>
+
+    <section class="section" id="faq">
+      <div class="container" style="max-width:48rem;">
+        <div class="center">
+          <span class="tag">FAQ</span>
+          <h2 class="display section-title">Everything You <em>Need to Know</em></h2>
+        </div>
+        <div id="faqList"></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="card cta-card">
+          <div class="fan">
+            <img class="fan-card fan-left" src="https://admin.storebox.ai/media/f3d54a7d-a615-4245-a1e7-07c89a274444/abac8a57-a07c-42aa-8099-03b6ad9fb08b/pool.jpg" alt="" />
+            <img class="fan-card" src="https://admin.storebox.ai/media/f3d54a7d-a615-4245-a1e7-07c89a274444/435ec0d0-51b1-4a11-bc4e-bf7fb49c828f/pool-sea.jpg" alt="" />
+            <img class="fan-card fan-right" src="https://admin.storebox.ai/media/f3d54a7d-a615-4245-a1e7-07c89a274444/9dd429ba-f8bc-421d-83f9-dc5fab00956f/lounge.jpg" alt="" />
+          </div>
+          <h2 class="display section-title">You deserve to feel <em>alive</em> on every getaway.</h2>
+          <p style="color:var(--ink-soft);max-width:28rem;margin-inline:auto;">Explore vacation-club membership and discover whether Royal Holiday is right for the way you travel.</p>
+          <a class="btn btn-dark" href="#qualify" style="margin-top:1.25rem;">Book your free discovery call</a>
+          <p class="note" style="margin-top:1rem;">After you submit, our team reviews your preferences and may contact you. Submitting does not guarantee membership, pricing, or an appointment.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="qualify">
+      <div class="container">
+        <div class="card form-card">
+          <header class="center">
+            <span class="tag">Qualification</span>
+            <h2 class="display section-title">Tell us how you like to travel</h2>
+            <p style="color:var(--ink-soft);">A short guided conversation helps us understand whether vacation-club membership may fit your plans.</p>
+          </header>
+          <div id="formUi">
+            <div class="steps">
+              <span class="step-lab on" data-s="0">1. <span class="short">Preferences</span><span class="full">Travel preferences</span><i></i></span>
+              <span class="step-lab" data-s="1">2. <span class="short">Contact</span><span class="full">Contact details</span><i></i></span>
+              <span class="step-lab" data-s="2">3. <span class="short">Consent</span><span class="full">Consent &amp; submit</span><i></i></span>
+            </div>
+            <form id="qualifyForm" novalidate>
+              <div class="pane on" data-pane="0">
+                <p style="font-size:0.9rem;font-weight:500;">Preferred destinations</p>
+                <div class="chips" id="destChips"></div>
+                <p class="err" id="destErr"></p>
+                <label for="freq">Typical annual vacation frequency</label>
+                <select id="freq" required>
+                  <option value="" disabled selected>Select an option</option>
+                  <option value="1">About once a year</option>
+                  <option value="2-3">2–3 times a year</option>
+                  <option value="4+">4 or more times a year</option>
+                  <option value="rarely">Less than once a year</option>
+                </select>
+                <label for="travelers">Number of travelers</label>
+                <select id="travelers" required>
+                  <option value="" disabled selected>Select an option</option>
+                  <option value="1">1 traveler</option>
+                  <option value="2">2 travelers</option>
+                  <option value="3-4">3–4 travelers</option>
+                  <option value="5+">5 or more</option>
+                </select>
+                <label for="timeshare">Current timeshare ownership status</label>
+                <select id="timeshare" required>
+                  <option value="" disabled selected>Select an option</option>
+                  <option value="none">I do not own a timeshare</option>
+                  <option value="current">I currently own a timeshare</option>
+                  <option value="previous">I previously owned a timeshare</option>
+                  <option value="prefer_not">Prefer not to say</option>
+                </select>
+                <label for="budget">Approximate membership or travel budget</label>
+                <select id="budget" required>
+                  <option value="" disabled selected>Select an option</option>
+                  <option value="under_10k">Under $10,000</option>
+                  <option value="10k_25k">$10,000 – $25,000</option>
+                  <option value="25k_50k">$25,000 – $50,000</option>
+                  <option value="50k_plus">$50,000+</option>
+                  <option value="unsure">Not sure yet</option>
+                </select>
+                <label for="timeline">Purchase timeline</label>
+                <select id="timeline" required>
+                  <option value="" disabled selected>Select an option</option>
+                  <option value="asap">As soon as possible</option>
+                  <option value="1_3_months">Within 1–3 months</option>
+                  <option value="3_6_months">Within 3–6 months</option>
+                  <option value="exploring">Just exploring options</option>
+                </select>
+              </div>
+              <div class="pane" data-pane="1">
+                <label for="fullName">Full name</label>
+                <input id="fullName" name="fullName" type="text" autocomplete="name" required />
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" autocomplete="email" required />
+                <label for="phone">Phone</label>
+                <input id="phone" name="phone" type="tel" autocomplete="tel" required />
+                <label for="cityState">U.S. city or state</label>
+                <input id="cityState" name="cityState" type="text" autocomplete="address-level2" required />
+                <label for="method">Preferred contact method</label>
+                <select id="method" required>
+                  <option value="" disabled selected>Select an option</option>
+                  <option value="phone">Phone</option>
+                  <option value="email">Email</option>
+                  <option value="whatsapp">WhatsApp</option>
+                  <option value="sms">SMS</option>
+                </select>
+                <label for="time">Preferred contact time</label>
+                <select id="time" required>
+                  <option value="" disabled selected>Select an option</option>
+                  <option value="morning">Morning</option>
+                  <option value="afternoon">Afternoon</option>
+                  <option value="evening">Evening</option>
+                  <option value="anytime">Anytime</option>
+                </select>
+                <label for="attend">Can decision-makers attend a presentation?</label>
+                <select id="attend" required>
+                  <option value="" disabled selected>Select an option</option>
+                  <option value="yes">Yes</option>
+                  <option value="no">No</option>
+                  <option value="unsure">Unsure</option>
+                </select>
+              </div>
+              <div class="pane" data-pane="2">
+                <p style="color:var(--ink-soft);font-size:0.9rem;">We use the information you provide to respond to your inquiry about vacation-club membership. Do not submit medical or health information in this form.</p>
+                <label class="check"><input type="checkbox" id="privacy" /> I acknowledge the privacy notice.</label>
+                <label class="check"><input type="checkbox" id="contactOk" /> I consent to be contacted about this inquiry.</label>
+                <label class="check"><input type="checkbox" id="mEmail" /> Email me relevant offers (optional)</label>
+              </div>
+              <p class="err" id="formErr"></p>
+              <div class="form-nav">
+                <button type="button" class="btn btn-ghost" id="backBtn" hidden>← Back</button>
+                <button type="submit" class="btn btn-light" id="nextBtn">Continue</button>
+              </div>
+            </form>
+          </div>
+          <div class="success" id="success" hidden>
+            <h3 class="display" style="font-size:1.8rem;">Thank you — we received your inquiry</h3>
+            <p style="color:var(--ink-soft);">A vacation specialist may contact you using your preferred method. This standalone page stores the inquiry locally in your browser only.</p>
+            <p style="margin-top:1rem;">Prefer to call? <a href="tel:+18553076925">1 855 30 ROYAL (76925)</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer role="contentinfo">
+    <div class="container">
+      <div class="foot">
+        <div class="foot-hero">
+          <img src="https://admin.storebox.ai/media/f3d54a7d-a615-4245-a1e7-07c89a274444/9c3b141e-9676-4b57-a200-d5404d5cc440/caribbean.jpg" alt="Tropical resort at dusk" />
+          <div class="foot-hero-copy">
+            <h2 class="display">Royal Holiday</h2>
+            <p>Vacation-club membership for travelers who want more from every getaway.</p>
+          </div>
+        </div>
+        <div class="foot-body">
+          <div class="foot-links">
+            <a href="#destinations">Destinations</a>
+            <a href="#membership">How it works</a>
+            <a href="#stories">Stories</a>
+            <a href="#faq">FAQ</a>
+            <a href="tel:+18553076925">1 855 30 ROYAL (76925)</a>
+          </div>
+          <a class="btn btn-light" href="#qualify" style="margin-top:1.25rem;">Begin your journey</a>
+          <div class="legal">
+            <p>© 2026 Holiday Club Management Company de México, S.A. de C.V. Vacation-club membership &amp; timeshare products only.</p>
+            <p><a href="https://www.royal-holiday.com/en/privacy-policy" target="_blank" rel="noopener">Privacy policy</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="cookie" id="cookie">
+    <p style="margin:0 0 0.75rem;font-size:0.9rem;">We use essential cookies to run this page. Optional analytics only fire with consent.</p>
+    <button class="btn btn-light" type="button" id="cookieOk">Accept</button>
+  </div>
+
+  <script>
+  (function () {
+    const $ = (id) => document.getElementById(id);
+    const store = {
+      get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+      set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+    };
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const hasGsap = typeof gsap !== "undefined";
+    if (hasGsap && typeof ScrollTrigger !== "undefined") gsap.registerPlugin(ScrollTrigger);
+    const ASSETS = {
+      "water.jpg": "https://admin.storebox.ai/media/f3d54a7d-a615-4245-a1e7-07c89a274444/82efbe43-0300-4285-9e12-70b687d1e829/water.jpg",
+      "suite.jpg": "https://admin.storebox.ai/media/f3d54a7d-a615-4245-a1e7-07c89a274444/14f5563a-7859-43c8-ac59-6fdb3c1ced8f/suite.jpg",
+      "favicon.svg": "https://admin.storebox.ai/media/f3d54a7d-a615-4245-a1e7-07c89a274444/038e9184-0857-4882-8dd3-0ccbb0cde2d2/favicon.svg",
+      "pool-sea.jpg": "https://admin.storebox.ai/media/f3d54a7d-a615-4245-a1e7-07c89a274444/435ec0d0-51b1-4a11-bc4e-bf7fb49c828f/pool-sea.jpg",
+      "spa.jpg": "https://admin.storebox.ai/media/f3d54a7d-a615-4245-a1e7-07c89a274444/1b008fea-cdca-4e11-ba46-9b6e06d9f5a3/spa.jpg",
+      "pool.jpg": "https://admin.storebox.ai/media/f3d54a7d-a615-4245-a1e7-07c89a274444/abac8a57-a07c-42aa-8099-03b6ad9fb08b/pool.jpg",
+      "miami.jpg": "https://admin.storebox.ai/media/f3d54a7d-a615-4245-a1e7-07c89a274444/b63fa503-b9ec-4290-b4c4-cd0e99f9639d/miami.jpg",
+      "planning.jpg": "https://admin.storebox.ai/media/f3d54a7d-a615-4245-a1e7-07c89a274444/1f54d78b-445f-48bf-b818-39e857a093d6/planning.jpg",
+      "landscape.jpg": "https://admin.storebox.ai/media/f3d54a7d-a615-4245-a1e7-07c89a274444/824b3263-4674-4aea-8f83-5a221542e597/landscape.jpg",
+      "lounge.jpg": "https://admin.storebox.ai/media/f3d54a7d-a615-4245-a1e7-07c89a274444/9dd429ba-f8bc-421d-83f9-dc5fab00956f/lounge.jpg",
+      "hotel-suite.jpg": "https://admin.storebox.ai/media/f3d54a7d-a615-4245-a1e7-07c89a274444/96ce314e-bbb8-4009-961f-5a7c6903ee05/hotel-suite.jpg",
+      "exterior.jpg": "https://admin.storebox.ai/media/f3d54a7d-a615-4245-a1e7-07c89a274444/4043983c-8718-42b6-9515-fe16e8f2acf3/exterior.jpg",
+      "dining.jpg": "https://admin.storebox.ai/media/f3d54a7d-a615-4245-a1e7-07c89a274444/3eb226cc-f733-47f0-b7a4-65d5b435a011/dining.jpg",
+      "caribbean.jpg": "https://admin.storebox.ai/media/f3d54a7d-a615-4245-a1e7-07c89a274444/9c3b141e-9676-4b57-a200-d5404d5cc440/caribbean.jpg",
+      "beach.jpg": "https://admin.storebox.ai/media/f3d54a7d-a615-4245-a1e7-07c89a274444/4264013f-8447-4cb3-9c4b-8d988c1d21b9/beach.jpg"
+    };
+    const IMAGES = ["pool.jpg","pool-sea.jpg","beach.jpg","exterior.jpg","lounge.jpg","caribbean.jpg","suite.jpg","landscape.jpg","dining.jpg","spa.jpg","water.jpg","miami.jpg","planning.jpg","hotel-suite.jpg"];
+    const DESTINATIONS = [
+      { name: "Cancún", region: "Quintana Roo, Mexico", img: "caribbean.jpg", blurb: "Caribbean coastline stays associated with Park Royal Hotels & Resorts in Cancún.", property: "Grand Park Royal Cancún" },
+      { name: "Cozumel", region: "Quintana Roo, Mexico", img: "water.jpg", blurb: "Island destination listed among Park Royal Hotels & Resorts properties.", property: "Grand Park Royal Cozumel" },
+      { name: "Puerto Vallarta", region: "Jalisco, Mexico", img: "beach.jpg", blurb: "Pacific coast destination listed among Park Royal Hotels & Resorts properties.", property: "Grand Park Royal Puerto Vallarta" },
+      { name: "Los Cabos", region: "Baja California Sur, Mexico", img: "landscape.jpg", blurb: "Sea of Cortez destination listed among Park Royal Hotels & Resorts properties.", property: "Park Royal Homestay Los Cabos" },
+      { name: "Acapulco", region: "Guerrero, Mexico", img: "pool.jpg", blurb: "Pacific resort destination listed among Park Royal Hotels & Resorts properties.", property: "Park Royal Beach Acapulco" },
+      { name: "Miami Beach", region: "Florida, United States", img: "miami.jpg", blurb: "U.S. destination listed among Park Royal Hotels & Resorts properties.", property: "Park Royal Miami Beach" },
+      { name: "Orlando", region: "Florida, United States", img: "lounge.jpg", blurb: "Central Florida destination listed among Park Royal Hotels & Resorts properties.", property: "Park Royal Orlando" },
+      { name: "Punta Cana", region: "Dominican Republic", img: "beach.jpg", blurb: "Frequently cited among popular Caribbean options for members.", property: "Caribbean destination network" }
+    ];
+    const STEPS = [
+      { n: "Step 1", t: "Explore membership options", b: "Learn how vacation-club membership can fit the way you travel — destinations, trip frequency, and travel party size.", img: "pool.jpg" },
+      { n: "Step 2", t: "Understand destinations, reservations, and benefits", b: "Review how Holiday Credits, reservation windows, participating destinations, and member services work before making any decision.", img: "planning.jpg" },
+      { n: "Step 3", t: "Speak with a vacation specialist", b: "Discuss available options, costs, restrictions, and terms with a specialist. Attendance at a vacation ownership presentation may be part of the process.", img: "hotel-suite.jpg" }
+    ];
+    const FAQ = [
+      ["What is vacation-club membership?", "Vacation-club membership is typically a points- or credits-based way to reserve stays across participating destinations, rather than owning a fixed week at a single resort. Royal Holiday publicly describes a Holiday Credits model."],
+      ["How does Royal Holiday membership work?", "Public materials describe depositing Holiday Credits that can be used based on destination, season, resort type, length of stay, and room size. Availability is checked at reservation time."],
+      ["Which destinations are available?", "Royal Holiday materials reference access to a broad network including Park Royal Hotels & Resorts locations in Mexico, the United States, Puerto Rico, and Argentina, plus additional affiliated options."],
+      ["How do reservations work?", "Members typically select destination and travel dates, review availability and required credits, then book subject to membership rules."],
+      ["What costs and fees should I understand?", "Membership purchases generally involve an initial cost and may include ongoing fees. This website does not list pricing because fees must be confirmed by Royal Holiday."],
+      ["Are there membership restrictions?", "Yes. Expect rules around credit usage, peak seasons, unit size, destination availability, guest policies, and transfer or resale limitations."],
+      ["What happens during a vacation ownership presentation?", "A scheduled meeting with a specialist to review membership options, destinations, costs, and terms. Attendance does not obligate you to purchase."],
+      ["How can I speak with a vacation specialist?", "Use the qualification form on this page, or call 1 855 30 ROYAL (76925). Submitting a form does not guarantee membership or an appointment."]
+    ];
+
+    /* Filmstrip */
+    const film = $("film");
+    const loop = IMAGES.concat(IMAGES);
+    if (film) film.innerHTML = loop.map(f => `<div class="film-card"><img src="${ASSETS[f]}" alt="" /></div>`).join("");
+
+    /* Destinations */
+    const destList = $("destList");
+    if (destList) {
+      destList.innerHTML = DESTINATIONS.map(d => `
+      <button type="button" class="card dest-card" data-qualify>
+        <div class="media"><img src="${ASSETS[d.img]}" alt="${d.name}" /></div>
+        <div class="pad">
+          <h3 class="display">${d.name}</h3>
+          <p class="blurb">${d.blurb}</p>
+          <div class="dest-pills">
+            <span class="pill">${d.property}</span>
+            <span class="pill pill-soft">${d.region}</span>
+          </div>
+        </div>
+      </button>`).join("");
+      destList.addEventListener("click", (e) => {
+        const card = e.target.closest("[data-qualify]");
+        if (!card) return;
+        const qualify = $("qualify");
+        if (qualify) qualify.scrollIntoView({ behavior: "smooth" });
+      });
+    }
+
+    /* Membership tabs */
+    let memI = 0;
+    const memTabs = [...document.querySelectorAll("#membership .tab")];
+    const paintTabFills = () => {
+      memTabs.forEach((t, i) => {
+        const fill = t.querySelector(".tab-fill");
+        if (!fill) return;
+        if (!hasGsap) {
+          fill.style.transform = i <= memI ? "scaleX(1)" : "scaleX(0)";
+          return;
+        }
+        gsap.killTweensOf(fill);
+        if (i < memI) gsap.set(fill, { scaleX: 1 });
+        else if (i > memI) gsap.set(fill, { scaleX: 0 });
+        else gsap.fromTo(fill, { scaleX: 0 }, { scaleX: 1, duration: reduced ? 0 : 6, ease: "none" });
+      });
+    };
+    const paintMem = (animate) => {
+      const s = STEPS[memI];
+      if (!s) return;
+      const num = $("memNum"), title = $("memTitle"), body = $("memBody"), img = $("memImg");
+      if (num) num.textContent = s.n;
+      if (title) title.textContent = s.t;
+      if (body) body.textContent = s.b;
+      if (img && ASSETS[s.img]) img.src = ASSETS[s.img];
+      memTabs.forEach((t, i) => t.classList.toggle("on", i === memI));
+      paintTabFills();
+      if (animate && hasGsap && !reduced) {
+        if (img) gsap.fromTo(img, { clipPath: "inset(0% 35% 0% 35%)", scale: 1.04 }, { clipPath: "inset(0% 0% 0% 0%)", scale: 1, duration: 0.85, ease: "power3.inOut" });
+        gsap.fromTo([num, title, body].filter(Boolean), { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, stagger: 0.05, ease: "power3.out" });
+      }
+    };
+    paintMem(false);
+    let memTimer = setInterval(() => { memI = (memI + 1) % STEPS.length; paintMem(true); }, 6000);
+    const bumpMem = (i) => {
+      memI = i;
+      paintMem(true);
+      clearInterval(memTimer);
+      memTimer = setInterval(() => { memI = (memI + 1) % STEPS.length; paintMem(true); }, 6000);
+    };
+    memTabs.forEach(t => t.addEventListener("click", () => bumpMem(Number(t.dataset.i))));
+
+    /* Stories 3D swipe */
+    const stories = DESTINATIONS.slice(0, 6);
+    const deck = $("deck");
+    const dots = $("dots");
+    const deskStories = $("deskStories");
+    if (deskStories) deskStories.innerHTML = stories.slice(0,3).map(s => `
+      <article class="story-card-desktop">
+        <img src="${ASSETS[s.img]}" alt="${s.name}" />
+        <div class="story-cap"><h3 class="display">${s.name}</h3><p>${s.region}</p></div>
+      </article>`).join("");
+    if (deck && dots) {
+      deck.innerHTML = stories.map((s, i) => `
+        <article class="story-card" data-i="${i}">
+          <img src="${ASSETS[s.img]}" alt="${s.name}" />
+          <div class="story-cap"><h3 class="display">${s.name}</h3><p>${s.region}</p></div>
+        </article>`).join("");
+      dots.innerHTML = stories.map((_, i) => `<span class="dot${i===0?" on":""}"></span>`).join("");
+
+      const cards = [...deck.querySelectorAll(".story-card")];
+      const n = cards.length;
+      let active = 0, dragging = false, startX = 0, dx = 0;
+      const syncDots = () => dots.querySelectorAll(".dot").forEach((d, k) => d.classList.toggle("on", k === active));
+      const layout = (x = 0, duration = 0) => {
+        cards.forEach((el, i) => {
+          const depth = (i - active + n) % n;
+          if (depth > 2) {
+            if (hasGsap) gsap.set(el, { opacity: 0, zIndex: 0, x: 0, pointerEvents: "none" });
+            else { el.style.opacity = "0"; el.style.pointerEvents = "none"; }
+            return;
+          }
+          const front = depth === 0;
+          const vars = {
+            x: front ? x : depth * 12,
+            y: depth * 18,
+            z: -depth * 48,
+            scale: 1 - depth * 0.07,
+            rotationY: front ? x * 0.14 : depth * -6,
+            rotationZ: front ? x * 0.035 : 0,
+            opacity: 1 - depth * 0.08,
+            zIndex: 20 - depth,
+            transformPerspective: 980,
+            transformOrigin: "50% 88%",
+            force3D: true,
+            pointerEvents: front ? "auto" : "none"
+          };
+          if (hasGsap && duration > 0 && !reduced) gsap.to(el, Object.assign({ duration, ease: "power3.out" }, vars));
+          else if (hasGsap) gsap.set(el, vars);
+          else {
+            el.style.opacity = String(vars.opacity);
+            el.style.zIndex = String(vars.zIndex);
+            el.style.pointerEvents = vars.pointerEvents;
+            el.style.transform = `translate3d(${vars.x}px, ${vars.y}px, ${vars.z}px) rotateY(${vars.rotationY}deg) rotateZ(${vars.rotationZ}deg) scale(${vars.scale})`;
+          }
+        });
+      };
+      layout(0);
+      const advance = (dir) => {
+        const next = (active + dir + n) % n;
+        const el = cards[active];
+        const fly = dir * Math.max(280, deck.clientWidth * 0.85);
+        if (el && hasGsap && !reduced) {
+          gsap.to(el, {
+            x: fly, rotationY: dir * 42, rotationZ: dir * 8, opacity: 0,
+            duration: 0.42, ease: "power2.in",
+            onComplete: () => { active = next; syncDots(); layout(0); }
+          });
+        } else {
+          active = next; syncDots(); layout(0, reduced ? 0 : 0.4);
+        }
+      };
+      const endDrag = (e) => {
+        if (!dragging) return;
+        dragging = false;
+        try { deck.releasePointerCapture(e.pointerId); } catch (err) {}
+        if (Math.abs(dx) > 72) advance(dx < 0 ? 1 : -1);
+        else layout(0, reduced ? 0 : 0.35);
+        dx = 0;
+      };
+      deck.addEventListener("pointerdown", e => { dragging = true; startX = e.clientX; dx = 0; deck.setPointerCapture(e.pointerId); });
+      deck.addEventListener("pointermove", e => { if (!dragging) return; dx = e.clientX - startX; layout(dx); });
+      deck.addEventListener("pointerup", endDrag);
+      deck.addEventListener("pointercancel", endDrag);
+    }
+
+    /* FAQ */
+    const faqList = $("faqList");
+    if (faqList) {
+      faqList.innerHTML = FAQ.map(([q, a], i) => `
+        <div class="faq-item${i===0?" open":""}">
+          <button type="button">${q}<span class="faq-icon">${i===0?"−":"+"}</span></button>
+          <div class="faq-panel"><div>${a}</div></div>
+        </div>`).join("");
+      faqList.addEventListener("click", (e) => {
+        const btn = e.target.closest("button");
+        if (!btn || !faqList.contains(btn)) return;
+        const item = btn.parentElement;
+        const open = item.classList.contains("open");
+        faqList.querySelectorAll(".faq-item").forEach(el => {
+          el.classList.remove("open");
+          const icon = el.querySelector(".faq-icon");
+          if (icon) icon.textContent = "+";
+        });
+        if (!open) {
+          item.classList.add("open");
+          const icon = btn.querySelector(".faq-icon");
+          if (icon) icon.textContent = "−";
+        }
+      });
+    }
+
+    /* Nav */
+    const panel = $("mobilePanel");
+    const menuBtn = $("menuBtn");
+    if (menuBtn && panel) {
+      menuBtn.addEventListener("click", () => {
+        const open = panel.classList.toggle("open");
+        document.body.classList.toggle("menu-open", open);
+        menuBtn.setAttribute("aria-expanded", open ? "true" : "false");
+      });
+      panel.querySelectorAll("a").forEach(a => a.addEventListener("click", () => {
+        panel.classList.remove("open"); document.body.classList.remove("menu-open");
+      }));
+    }
+
+    /* Form */
+    const dests = ["Cancún","Los Cabos","Puerto Vallarta","Orlando","Miami Beach","Caribbean","Europe","Other / not sure yet"];
+    const chips = $("destChips");
+    const selected = new Set();
+    if (chips) {
+      chips.innerHTML = dests.map(d => `<button type="button" class="chip-btn">${d}</button>`).join("");
+      chips.querySelectorAll(".chip-btn").forEach(b => b.addEventListener("click", () => {
+        b.classList.toggle("on");
+        if (b.classList.contains("on")) selected.add(b.textContent); else selected.delete(b.textContent);
+        const destErr = $("destErr");
+        if (destErr && selected.size) destErr.textContent = "";
+      }));
+    }
+    let step = 0;
+    const panes = [...document.querySelectorAll("#qualifyForm .pane")];
+    const labs = [...document.querySelectorAll("#qualify .step-lab")];
+    const backBtn = $("backBtn");
+    const nextBtn = $("nextBtn");
+    const formErr = $("formErr");
+    const fieldVal = (id) => {
+      const el = $(id);
+      if (!el) return "";
+      return (el.value || "").trim();
+    };
+    const showStep = () => {
+      panes.forEach((p, i) => p.classList.toggle("on", i === step));
+      labs.forEach((l, i) => l.classList.toggle("on", i === step));
+      if (backBtn) backBtn.hidden = step === 0;
+      if (nextBtn) nextBtn.textContent = step === 2 ? "Submit inquiry" : "Continue";
+      if (formErr) formErr.textContent = "";
+      const pane = panes[step];
+      if (pane && hasGsap && !reduced) {
+        gsap.fromTo(pane, { opacity: 0, x: 28 }, { opacity: 1, x: 0, duration: 0.4, ease: "power3.out" });
+      }
+    };
+    const paneValid = () => {
+      if (step === 0) {
+        const destOk = selected.size > 0;
+        const fieldsOk = ["freq","travelers","timeshare","budget","timeline"].every(id => fieldVal(id));
+        const destErr = $("destErr");
+        if (destErr) destErr.textContent = destOk ? "" : "Select at least one destination interest";
+        if (formErr) formErr.textContent = fieldsOk ? "" : "Choose an option for each travel question.";
+        return destOk && fieldsOk;
+      }
+      if (step === 1) {
+        const ok = ["fullName","email","phone","cityState","method","time","attend"].every(id => fieldVal(id));
+        if (formErr) formErr.textContent = ok ? "" : "Please complete your contact details.";
+        return ok;
+      }
+      const ok = $("privacy") && $("privacy").checked && $("contactOk") && $("contactOk").checked;
+      if (formErr) formErr.textContent = ok ? "" : "Please accept the required consent checkboxes.";
+      return ok;
+    };
+    const goNext = () => {
+      if (!paneValid()) return;
+      if (step < 2) { step += 1; showStep(); return; }
+      const payload = {
+        destinations: [...selected],
+        freq: fieldVal("freq"),
+        travelers: fieldVal("travelers"),
+        timeshare: fieldVal("timeshare"),
+        budget: fieldVal("budget"),
+        timeline: fieldVal("timeline"),
+        name: fieldVal("fullName"),
+        email: fieldVal("email"),
+        phone: fieldVal("phone"),
+        location: fieldVal("cityState"),
+        method: fieldVal("method"),
+        time: fieldVal("time"),
+        attend: fieldVal("attend")
+      };
+      store.set("rh_lead", JSON.stringify(payload));
+      const formUi = $("formUi");
+      const success = $("success");
+      if (formUi) formUi.hidden = true;
+      if (success) success.hidden = false;
+    };
+    const form = $("qualifyForm");
+    if (form) form.addEventListener("submit", (e) => { e.preventDefault(); goNext(); });
+    if (backBtn) backBtn.addEventListener("click", () => { if (step > 0) { step -= 1; showStep(); } });
+
+    /* Cookie */
+    const cookie = $("cookie");
+    if (cookie && !store.get("rh_cookie")) cookie.classList.add("show");
+    const cookieOk = $("cookieOk");
+    if (cookieOk) cookieOk.addEventListener("click", () => {
+      store.set("rh_cookie", "1");
+      if (cookie) cookie.classList.remove("show");
+    });
+
+    /* Motion — GSAP (hero, filmstrip, scroll reveals, hover) */
+    const bootMotion = () => {
+      if (!hasGsap || reduced) {
+        if (film && !reduced) film.style.animation = "marquee 42s linear infinite";
+        return;
+      }
+
+      const heroIns = [".hero-badge", ".hero-title span", ".hero-sub", ".hero-cta", ".hero-scroll"];
+      gsap.set(heroIns, { opacity: 0, y: 24 });
+      gsap.timeline({ defaults: { ease: "power3.out" } })
+        .to(".hero-badge", { y: 0, opacity: 1, duration: 0.55 }, 0.05)
+        .to(".hero-title span", { y: 0, opacity: 1, duration: 0.7, stagger: 0.08 }, 0.15)
+        .to(".hero-sub", { y: 0, opacity: 1, duration: 0.5 }, 0.35)
+        .to(".hero-cta", { y: 0, opacity: 1, duration: 0.5 }, 0.45)
+        .to(".hero-scroll", { y: 0, opacity: 1, duration: 0.45 }, 0.7);
+
+      if (typeof ScrollTrigger !== "undefined") {
+        gsap.to(".hero-aurora-layer", {
+          yPercent: 14, ease: "none",
+          scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true }
+        });
+        const bar = document.querySelector("#progress i");
+        if (bar) {
+          gsap.to(bar, {
+            scaleX: 1, ease: "none",
+            scrollTrigger: { scrub: 0.2, start: 0, end: "max" }
+          });
+        }
+        gsap.from("#philosophy .split", {
+          y: 40, opacity: 0, duration: 0.85, ease: "power3.out",
+          scrollTrigger: { trigger: "#philosophy", start: "top 78%" }
+        });
+        gsap.from("#impact .stat", {
+          y: 36, opacity: 0, duration: 0.75, stagger: 0.12, ease: "power3.out",
+          scrollTrigger: { trigger: "#impact", start: "top 75%" }
+        });
+        gsap.set("#destinations .dest-card", { autoAlpha: 1, y: 0 });
+        ScrollTrigger.batch("#destinations .dest-card", {
+          start: "top 88%",
+          once: true,
+          onEnter: (els) => gsap.fromTo(els,
+            { y: 36, autoAlpha: 0 },
+            { y: 0, autoAlpha: 1, duration: 0.7, stagger: 0.08, ease: "power3.out", overwrite: true }
+          )
+        });
+        gsap.from("#membership .center, #membership .mem-grid", {
+          y: 36, opacity: 0, duration: 0.75, stagger: 0.1, ease: "power3.out",
+          scrollTrigger: { trigger: "#membership", start: "top 75%" }
+        });
+        gsap.from("#stories .center, #stories .story-card-desktop", {
+          y: 50, opacity: 0, duration: 0.85, stagger: 0.12, ease: "power3.out",
+          scrollTrigger: { trigger: "#stories", start: "top 72%" }
+        });
+        gsap.from("#faq .center, #faq .faq-item", {
+          y: 28, opacity: 0, duration: 0.7, stagger: 0.08, ease: "power3.out",
+          scrollTrigger: { trigger: "#faq", start: "top 78%" }
+        });
+        const cta = document.querySelector(".cta-card");
+        if (cta) {
+          gsap.from(".fan-card", {
+            y: 80, rotation: 0, opacity: 0, duration: 1, stagger: 0.08, ease: "power3.out",
+            scrollTrigger: { trigger: cta, start: "top 70%" }
+          });
+          gsap.fromTo(".fan-left", { rotation: 0 }, {
+            rotation: -10, ease: "none",
+            scrollTrigger: { trigger: cta, start: "top 75%", end: "top 30%", scrub: true }
+          });
+          gsap.fromTo(".fan-right", { rotation: 0 }, {
+            rotation: 10, ease: "none",
+            scrollTrigger: { trigger: cta, start: "top 75%", end: "top 30%", scrub: true }
+          });
+        }
+        gsap.from("#qualify .form-card", {
+          y: 36, opacity: 0, duration: 0.75, ease: "power3.out",
+          scrollTrigger: { trigger: "#qualify", start: "top 78%" }
+        });
+      }
+
+      if (film) {
+        let tween;
+        const startFilm = () => {
+          if (tween) tween.kill();
+          gsap.set(film, { x: 0 });
+          const cards = [...film.querySelectorAll(".film-card")];
+          cards.forEach((c, i) => gsap.set(c, { y: i % 2 ? 12 : -8 }));
+          const width = film.scrollWidth / 2;
+          if (width < 1) return;
+          tween = gsap.to(film, {
+            x: -width,
+            duration: Math.max(24, width / 46),
+            ease: "none",
+            repeat: -1
+          });
+        };
+        startFilm();
+        window.addEventListener("resize", startFilm);
+        const wrap = film.parentElement;
+        if (wrap) {
+          wrap.addEventListener("pointerenter", () => tween && tween.pause());
+          wrap.addEventListener("pointerleave", () => tween && tween.play());
+        }
+      }
+
+      const fine = window.matchMedia("(pointer: fine)").matches;
+      if (fine) {
+        document.querySelectorAll(".btn").forEach((el) => {
+          const xTo = gsap.quickTo(el, "x", { duration: 0.4, ease: "power3.out" });
+          const yTo = gsap.quickTo(el, "y", { duration: 0.4, ease: "power3.out" });
+          el.addEventListener("mouseenter", () => gsap.to(el, { scale: 1.05, duration: 0.35, ease: "power3.out" }));
+          el.addEventListener("mousemove", (e) => {
+            const r = el.getBoundingClientRect();
+            xTo(((e.clientX - (r.left + r.width / 2)) / r.width) * 16);
+            yTo(((e.clientY - (r.top + r.height / 2)) / r.height) * 16);
+          });
+          el.addEventListener("mouseleave", () => {
+            xTo(0); yTo(0);
+            gsap.to(el, { scale: 1, duration: 0.4, ease: "power3.out" });
+          });
+        });
+        document.querySelectorAll("[data-hover-card]").forEach((el) => {
+          const media = el.querySelector("[data-hover-media]");
+          el.addEventListener("mouseenter", () => {
+            gsap.to(el, { y: -8, duration: 0.5, ease: "power3.out" });
+            if (media) gsap.to(media, { scale: 1.1, duration: 0.85, ease: "power2.out" });
+          });
+          el.addEventListener("mouseleave", () => {
+            gsap.to(el, { y: 0, duration: 0.5, ease: "power3.out" });
+            if (media) gsap.to(media, { scale: 1, duration: 0.7, ease: "power2.out" });
+          });
+        });
+      }
+
+      if (menuBtn && panel) {
+        menuBtn.addEventListener("click", () => {
+          if (panel.classList.contains("open")) {
+            gsap.fromTo(panel, { opacity: 0, y: -16 }, { opacity: 1, y: 0, duration: 0.35, ease: "power3.out" });
+          }
+        });
+      }
+    };
+    bootMotion();
+    window.addEventListener("load", () => {
+      if (hasGsap && typeof ScrollTrigger !== "undefined") ScrollTrigger.refresh();
+    });
+  })();
+  </script>
+</body>
+</html>
