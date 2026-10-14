@@ -32,7 +32,7 @@
     }
 
     *, *::before, *::after { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; overflow-x: clip; }
     body {
       margin: 0;
       background: var(--ivory);
@@ -40,14 +40,45 @@
       font-family: var(--body);
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
+      overflow-x: clip;
+      max-width: 100%;
     }
     img { max-width: 100%; display: block; }
     a { color: inherit; }
     button, input, select { font-family: inherit; }
-    .container { width: min(100% - 2.5rem, 72rem); margin-inline: auto; }
+    .container { width: min(100% - 2.5rem, 72rem); margin-inline: auto; min-width: 0; }
     .display { font-family: var(--display); font-weight: 500; letter-spacing: -0.02em; line-height: 1.12; }
     em { font-style: italic; font-weight: 400; }
-    .section { padding-block: var(--section-pad-y, clamp(2.5rem, 4vw, 4.5rem)); background: var(--ivory); }
+    .section { padding-block: var(--section-pad-y, clamp(2.5rem, 4vw, 4.5rem)); background: transparent; scroll-margin-top: 5.75rem; }
+
+    /* Scroll SVG pattern — hero → footer */
+    .page-canvas { position: relative; }
+    .scroll-pattern {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .scroll-pattern svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+      color: #7a6bb8;
+    }
+    .pattern-ink { opacity: 0.5; color: #7a6bb8; }
+    .pattern-light { opacity: 0.28; color: #fff; }
+    .pattern-node { transform-box: fill-box; transform-origin: center; }
+    .hero-pattern {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      overflow: hidden;
+      color: #fff;
+      mix-blend-mode: overlay;
+    }
+    .hero-pattern svg { display: block; width: 100%; height: 100%; }
+    main, footer { position: relative; z-index: 1; }
     .section-title { font-size: clamp(1.65rem, 4.5vw, 3rem); }
     .tag {
       display: inline-flex; align-items: center; border-radius: 9999px;
@@ -55,11 +86,26 @@
       letter-spacing: 0.12em; text-transform: uppercase;
       background: var(--lavender); color: var(--teal);
     }
+    .glass-panel {
+      background: rgba(242, 240, 235, 0.86);
+      backdrop-filter: blur(22px) saturate(1.25);
+      -webkit-backdrop-filter: blur(22px) saturate(1.25);
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      box-shadow: 0 12px 40px rgba(28, 26, 24, 0.06);
+      border-radius: 1.75rem;
+      padding: 1.35rem 1.25rem 1.5rem;
+      max-width: 100%;
+      min-width: 0;
+    }
+    @media (min-width: 640px) {
+      .glass-panel { padding: 1.75rem 1.7rem 1.85rem; border-radius: 2rem; }
+    }
     .card { background: var(--sand); border-radius: clamp(1.5rem, 4vw, 2.75rem); }
     .btn {
       display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
       border-radius: 9999px; font-weight: 500; letter-spacing: 0.02em; text-decoration: none;
       border: 0; cursor: pointer; padding: 0.85rem 1.6rem; font-size: 0.95rem;
+      max-width: 100%;
     }
     .btn-light { background: #f5f3ef; color: var(--ink); }
     .btn-dark { background: var(--ocean); color: #fff; }
@@ -68,30 +114,56 @@
     .btn:disabled { opacity: 0.4; pointer-events: none; }
 
     /* Nav */
-    .nav-wrap { position: fixed; top: 0.85rem; inset-inline: 0; z-index: 50; display: flex; justify-content: center; padding: 0 0.75rem; pointer-events: none; }
+    .nav-wrap {
+      position: fixed; top: 0.85rem; inset-inline: 0; z-index: 60;
+      display: flex; justify-content: center; flex-wrap: wrap;
+      padding: 0 1.25rem; pointer-events: none;
+    }
     .nav {
       pointer-events: auto; display: flex; width: 100%; max-width: 64rem; align-items: center;
       justify-content: space-between; gap: 0.75rem; border-radius: 9999px;
-      background: rgba(28,26,24,0.95); color: #fff; padding: 0.5rem 1rem;
+      background: rgba(28,26,24,0.95); color: #fff; padding: 0.45rem 0.65rem 0.45rem 1rem;
       box-shadow: 0 10px 40px rgba(28,26,24,0.25); backdrop-filter: blur(12px);
+      min-width: 0; overflow: hidden;
     }
-    .nav-brand { font-weight: 600; text-decoration: none; font-size: 1.05rem; }
-    .nav-links { display: none; list-style: none; gap: 1.75rem; margin: 0; padding: 0; }
-    .nav-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.9rem; }
+    .nav-brand {
+      font-weight: 600; text-decoration: none; font-size: 1.05rem;
+      white-space: nowrap; min-width: 0; overflow: hidden; text-overflow: ellipsis;
+    }
+    .nav-links { display: none; list-style: none; gap: 1.75rem; margin: 0; padding: 0; flex-shrink: 1; }
+    .nav-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.9rem; white-space: nowrap; }
     .nav-links a:hover { color: #fff; }
-    .nav-cta { display: none; }
-    .menu-btn { background: none; border: 0; color: #fff; padding: 0.4rem; cursor: pointer; }
+    .nav-cta { display: none; flex-shrink: 0; white-space: nowrap; }
+    .menu-btn {
+      background: none; border: 0; color: #fff; padding: 0.4rem; cursor: pointer;
+      flex-shrink: 0; line-height: 0; display: inline-flex; align-items: center; justify-content: center;
+      width: 2.25rem; height: 2.25rem; border-radius: 9999px;
+    }
+    .menu-btn:hover { background: rgba(255,255,255,0.1); }
+    .menu-btn svg { display: block; width: 1.35rem; height: 1.35rem; }
+    .menu-btn .icon-close { display: none; }
+    body.menu-open .menu-btn .icon-menu { display: none; }
+    body.menu-open .menu-btn .icon-close { display: block; }
     .mobile-panel {
-      display: none; position: fixed; inset: 4.5rem 0.75rem 0.75rem; z-index: 49;
-      background: var(--ocean-deep); color: #fff; border-radius: 1.75rem; padding: 1.5rem;
-      flex-direction: column;
+      display: none; pointer-events: auto; position: fixed;
+      top: 4.5rem; right: 1.25rem; bottom: 0.75rem; left: 1.25rem;
+      z-index: 59;
+      background: var(--ocean-deep); color: #fff; border-radius: 1.75rem; padding: 1.25rem 1.35rem 1.5rem;
+      flex-direction: column; gap: 0.15rem;
+      overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain;
+      isolation: isolate;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.45);
     }
     .mobile-panel.open { display: flex; }
-    .mobile-panel a { display: block; font-family: var(--display); font-size: 1.6rem; padding: 0.6rem 0; text-decoration: none; }
+    .mobile-panel a:not(.btn) {
+      display: block; font-family: var(--display); font-size: clamp(1.45rem, 7vw, 1.85rem);
+      padding: 0.55rem 0; text-decoration: none; color: #fff;
+    }
+    .mobile-panel .btn { width: 100%; margin-top: auto; flex-shrink: 0; white-space: normal; }
     body.menu-open { overflow: hidden; }
 
     /* Hero */
-    .hero { position: relative; min-height: 100svh; overflow: hidden; color: #fff; }
+    .hero { position: relative; min-height: 100svh; overflow-x: clip; overflow-y: visible; color: #fff; }
     .hero-aurora {
       position: absolute; inset: 0; pointer-events: none;
       background:
@@ -102,7 +174,80 @@
         radial-gradient(ellipse 100% 36% at 50% 70%, #f0c9a0 0%, transparent 70%),
         linear-gradient(180deg, #041820 0%, #0a3540 14%, #0c5c68 28%, #1a9a8e 42%, #6bc4b0 56%, #c9e4d4 70%, #ebe6dc 86%, #f2f0eb 100%);
     }
-    .hero-inner { position: relative; display: flex; min-height: 100svh; flex-direction: column; padding: 5rem 0 1.5rem; text-align: center; }
+    .hero-inner { position: relative; z-index: 2; display: flex; min-height: 100svh; flex-direction: column; padding: 5rem 0 1.5rem; text-align: center; }
+
+    .beach-ball {
+      position: absolute;
+      top: 0; left: 0;
+      z-index: 6;
+      width: 5.4rem; height: 5.4rem;
+      touch-action: none;
+      cursor: grab;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    .beach-ball:active { cursor: grabbing; }
+    .beach-ball.is-held .ball-skin { transform: scale(1.06); }
+    .ball-lift { position: relative; width: 100%; height: 100%; }
+    .ball-sphere { width: 100%; height: 100%; position: relative; }
+    .ball-skin {
+      width: 100%; height: 100%; border-radius: 50%;
+      position: relative; overflow: hidden;
+      background:
+        radial-gradient(circle at 30% 26%, rgba(255,255,255,0.88) 0 9%, rgba(255,255,255,0.18) 22%, transparent 40%),
+        repeating-conic-gradient(
+          from 18deg,
+          #f7f2e8 0 22deg,
+          #ee5846 22deg 52deg,
+          #f7f2e8 52deg 68deg,
+          #1eb8af 68deg 98deg,
+          #f7f2e8 98deg 114deg,
+          #f2cf4a 114deg 144deg,
+          #f7f2e8 144deg 160deg,
+          #3b7fa6 160deg 190deg,
+          #f7f2e8 190deg 206deg,
+          #ee5846 206deg 236deg,
+          #f7f2e8 236deg 252deg,
+          #1eb8af 252deg 282deg,
+          #f7f2e8 282deg 298deg,
+          #f2cf4a 298deg 328deg,
+          #f7f2e8 328deg 344deg,
+          #3b7fa6 344deg 360deg
+        );
+      box-shadow:
+        inset -12px -16px 24px rgba(18,14,10,0.38),
+        inset 10px 12px 18px rgba(255,255,255,0.28),
+        0 14px 28px rgba(8,18,22,0.28);
+    }
+    .ball-shine {
+      position: absolute; left: 16%; top: 12%;
+      width: 42%; height: 28%; border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,0.9), transparent 72%);
+      transform: rotate(-22deg); pointer-events: none;
+    }
+    .ball-seam {
+      position: absolute; inset: 0; border-radius: 50%;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.22);
+      pointer-events: none;
+    }
+    .ball-shadow {
+      position: absolute; left: 10%; right: 10%; bottom: -18%;
+      height: 22%; border-radius: 50%;
+      background: radial-gradient(ellipse, rgba(16,12,10,0.38), transparent 72%);
+      filter: blur(3px); pointer-events: none;
+    }
+    .ball-hint {
+      position: absolute; left: 50%; bottom: calc(100% + 0.45rem);
+      transform: translateX(-50%);
+      white-space: nowrap;
+      font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+      color: rgba(255,255,255,0.82);
+      text-shadow: 0 2px 10px rgba(0,0,0,0.28);
+      pointer-events: none;
+    }
+    @media (min-width: 768px) {
+      .beach-ball { width: 7.1rem; height: 7.1rem; }
+    }
     .badge {
       margin: 0 auto 1.25rem; display: inline-flex; align-items: center; gap: 0.6rem;
       border-radius: 9999px; border: 1px solid rgba(255,255,255,0.15); background: rgba(0,0,0,0.2);
@@ -152,28 +297,28 @@
     .note { text-align: center; font-size: 0.75rem; color: rgba(107,101,96,0.8); }
 
     /* Stats */
-    .center { text-align: center; max-width: 40rem; margin: 0 auto 1.75rem; }
+    .center { text-align: center; max-width: 40rem; width: 100%; margin: 0 auto 1.75rem; min-width: 0; }
     .stats { display: flex; gap: 0.75rem; overflow-x: auto; padding-bottom: 0.25rem; scroll-snap-type: x mandatory; }
     .stat { flex: 0 0 78%; max-width: 260px; scroll-snap-align: center; padding: 1.25rem; text-align: center; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
     .stat b { font-family: var(--display); font-size: clamp(2.25rem, 5vw, 3.75rem); font-weight: 500; display: block; }
 
     /* Destinations */
     .dest-copy { margin-bottom: 1.75rem; }
-    .dest-copy h2 { margin: 1rem 0 0; }
-    .dest-copy .lede { color: var(--ink-soft); margin-top: 0.9rem; max-width: 28rem; }
-    .dest-copy .aside { text-align: left; margin-top: 0.75rem; max-width: 28rem; }
+    .dest-copy h2 { margin: 1rem 0 0; overflow-wrap: break-word; }
+    .dest-copy .lede { color: var(--ink-soft); margin-top: 0.9rem; max-width: 100%; }
+    .dest-copy .aside { text-align: left; margin-top: 0.75rem; max-width: 100%; }
     .dest-faces { display: none; align-items: center; gap: 0.75rem; margin-top: 2rem; }
     .dest-faces .avatars span { width: 2.25rem; height: 2.25rem; border: 2px solid var(--ivory); }
     .dest-faces p { margin: 0; font-size: 0.9rem; color: var(--ink-soft); }
-    .dest-cta { margin-top: 1.5rem; }
+    .dest-cta { display: inline-flex; margin-top: 1.5rem; width: 100%; max-width: 100%; }
     .dest-list {
       display: flex; gap: 0.875rem; overflow-x: auto; scroll-snap-type: x mandatory;
-      margin-inline: -1.25rem; padding: 0 1.25rem 0.5rem;
+      margin-inline: 0; padding: 0 0 0.5rem;
       -ms-overflow-style: none; scrollbar-width: none;
     }
     .dest-list::-webkit-scrollbar { display: none; }
     .dest-card {
-      flex: 0 0 80vw; width: 80vw; max-width: 300px; scroll-snap-align: center;
+      flex: 0 0 min(18.75rem, 86%); width: min(18.75rem, 86%); max-width: 100%; scroll-snap-align: start;
       overflow: hidden; cursor: pointer; border: 0; text-align: left;
       font: inherit; color: inherit; padding: 0; display: block; background: var(--sand);
     }
@@ -269,7 +414,7 @@
     .err { color: var(--error); font-size: 0.85rem; margin-top: 0.35rem; }
 
     /* Footer */
-    footer { padding: 0.5rem 0 1.5rem; background: var(--ivory); }
+    footer { padding: 0.5rem 0 1.5rem; background: transparent; }
     .foot { overflow: hidden; background: var(--ocean-deep); color: #fff; border-radius: 1.75rem; box-shadow: 0 24px 60px rgba(28,26,24,0.18); }
     .foot-hero { position: relative; height: 15rem; }
     .foot-hero img { width: 100%; height: 100%; object-fit: cover; }
@@ -282,8 +427,8 @@
     .legal { margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.75rem; color: rgba(255,255,255,0.45); }
 
     .cookie {
-      position: fixed; bottom: 1rem; right: 1rem; left: auto; z-index: 40; display: none;
-      width: min(calc(100% - 2rem), 22rem);
+      position: fixed; bottom: 1rem; left: 1.25rem; right: 1.25rem; z-index: 40; display: none;
+      width: auto; max-width: 22rem; margin-left: auto;
       background: var(--ocean-deep); color: #fff; border-radius: 1.25rem; padding: 1rem 1.15rem;
       box-shadow: 0 16px 40px rgba(0,0,0,0.25);
     }
@@ -306,14 +451,14 @@
       .dest-card h3 { font-size: 1.5rem; }
       .dest-card .pad { padding: 0 1.25rem 1.5rem; }
       .dest-faces { display: flex; }
+      .dest-cta { width: auto; }
       .cta-card { padding: 2.5rem 1.5rem; }
       .form-card { padding: 2.5rem 1.5rem; }
     }
     @media (min-width: 768px) {
       .container { width: min(100% - 3.5rem, 72rem); }
-      .nav-links { display: flex; }
-      .nav-cta { display: inline-flex; }
-      .menu-btn { display: none; }
+      .nav-wrap { padding-inline: 1.75rem; }
+      .mobile-panel { left: 1.75rem; right: 1.75rem; }
       .hero { min-height: 0; }
       .hero-inner { min-height: 0; padding-top: 6rem; }
       .film-card { width: 340px; height: 240px; }
@@ -330,6 +475,11 @@
       .form-card { padding: 3rem 2.5rem; }
     }
     @media (min-width: 1024px) {
+      .nav-links { display: flex; }
+      .nav-cta { display: inline-flex; }
+      .menu-btn { display: none; }
+      .mobile-panel, .mobile-panel.open { display: none !important; }
+      .nav { overflow: visible; padding: 0.5rem 1rem; }
       .split-grid { grid-template-columns: 1fr 1fr; }
       .split-copy { padding: 3.5rem; }
       .split-media { min-height: 420px; }
@@ -348,6 +498,9 @@
     @media (prefers-reduced-motion: reduce) {
       .scroll-cue span { animation: none; }
       .film { animation: none !important; }
+      .pattern-ink { opacity: 0.42; }
+      .pattern-light { opacity: 0.22; }
+      .ball-hint { display: none; }
     }
   </style>
 </head>
@@ -363,20 +516,103 @@
         <li><a href="#faq">FAQ</a></li>
       </ul>
       <a class="btn btn-light nav-cta" href="#qualify">Speak With a Specialist</a>
-      <button class="menu-btn" type="button" id="menuBtn" aria-label="Open menu">☰</button>
+      <button class="menu-btn" type="button" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="mobilePanel">
+        <svg class="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <path d="M4 5h16M4 12h16M4 19h16"/>
+        </svg>
+        <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18"/>
+        </svg>
+      </button>
     </nav>
+    <div class="mobile-panel" id="mobilePanel">
+      <a href="#destinations">Destinations</a>
+      <a href="#membership">How it works</a>
+      <a href="#stories">Stories</a>
+      <a href="#faq">FAQ</a>
+      <a class="btn btn-light" href="#qualify">Speak With a Vacation Specialist</a>
+    </div>
   </header>
-  <div class="mobile-panel" id="mobilePanel">
-    <a href="#destinations">Destinations</a>
-    <a href="#membership">How it works</a>
-    <a href="#stories">Stories</a>
-    <a href="#faq">FAQ</a>
-    <a class="btn btn-light" href="#qualify" style="margin-top:auto;">Speak With a Vacation Specialist</a>
-  </div>
 
+  <div class="page-canvas" id="pageCanvas">
+    <div class="scroll-pattern" id="scrollPattern" aria-hidden="true">
+      <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <pattern id="rhLattice" width="56" height="96" patternUnits="userSpaceOnUse">
+            <path d="M28 2 L54 17 L28 32 L2 17 Z" fill="none" stroke="currentColor" stroke-width="1.15"/>
+            <path d="M28 32 L54 47 L28 62 L2 47 Z" fill="none" stroke="currentColor" stroke-width="1.15"/>
+            <path d="M28 62 L54 77 L28 92 L2 77 Z" fill="none" stroke="currentColor" stroke-width="1.15"/>
+            <circle cx="28" cy="17" r="1.7" fill="currentColor"/>
+            <circle cx="28" cy="47" r="1.7" fill="currentColor"/>
+            <circle cx="28" cy="77" r="1.7" fill="currentColor"/>
+          </pattern>
+        </defs>
+        <g class="pattern-shift">
+          <g class="pattern-ink">
+            <rect class="pattern-lattice" x="-120" y="-160" width="170%" height="150%" fill="url(#rhLattice)"/>
+            <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+              <path class="journey-draw" stroke-width="1.7" d="M160 -60 C280 80,40 200,210 340 C380 480,80 600,240 740 C400 880,100 1000,200 1140"/>
+              <path class="journey-draw" stroke-width="1.7" d="M430 -40 C300 120,560 260,400 400 C240 540,580 680,420 820 C260 960,540 1080,400 1200"/>
+              <path class="journey-draw journey-accent" stroke-width="2.25" d="M720 -80 C880 60,560 220,760 380 C960 540,580 700,780 840 C980 980,620 1100,720 1220"/>
+              <path class="journey-draw" stroke-width="1.7" d="M1010 -50 C1140 100,880 250,1060 400 C1240 550,900 700,1080 850 C1260 1000,940 1120,1040 1240"/>
+              <path class="journey-draw" stroke-width="1.7" d="M1300 -70 C1180 80,1400 230,1220 380 C1040 530,1380 680,1240 830 C1100 980,1360 1100,1280 1220"/>
+              <path class="journey-draw" stroke-width="1.35" d="M-40 210 C200 150,400 290,720 230 C1040 170,1240 310,1480 250"/>
+              <path class="journey-draw" stroke-width="1.35" d="M-40 540 C240 480,480 620,760 550 C1040 480,1280 640,1480 560"/>
+              <path class="journey-draw" stroke-width="1.35" d="M-40 820 C220 760,500 900,780 820 C1060 740,1300 900,1480 840"/>
+            </g>
+            <g class="pattern-nodes" fill="currentColor">
+              <circle class="pattern-node" cx="210" cy="340" r="3.2"/>
+              <circle class="pattern-node" cx="400" cy="400" r="2.6"/>
+              <circle class="pattern-node" cx="760" cy="380" r="3.6"/>
+              <circle class="pattern-node" cx="1060" cy="400" r="2.6"/>
+              <circle class="pattern-node" cx="1220" cy="380" r="3"/>
+              <circle class="pattern-node" cx="240" cy="740" r="2.8"/>
+              <circle class="pattern-node" cx="420" cy="820" r="3.2"/>
+              <circle class="pattern-node" cx="780" cy="840" r="2.8"/>
+              <circle class="pattern-node" cx="1080" cy="850" r="3"/>
+              <circle class="pattern-node" cx="720" cy="230" r="2.4"/>
+            </g>
+          </g>
+        </g>
+      </svg>
+    </div>
   <main>
     <section class="hero" id="top">
       <div class="hero-aurora hero-aurora-layer"></div>
+      <div class="hero-pattern" aria-hidden="true">
+        <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <pattern id="rhHeroLattice" width="72" height="124" patternUnits="userSpaceOnUse">
+              <path d="M36 2 L70 21.5 L36 41 L2 21.5 Z" fill="none" stroke="currentColor" stroke-width="0.7"/>
+              <path d="M36 41 L70 60.5 L36 80 L2 60.5 Z" fill="none" stroke="currentColor" stroke-width="0.7"/>
+              <path d="M36 80 L70 99.5 L36 119 L2 99.5 Z" fill="none" stroke="currentColor" stroke-width="0.7"/>
+              <circle cx="36" cy="21.5" r="1.25" fill="currentColor"/>
+              <circle cx="36" cy="60.5" r="1.25" fill="currentColor"/>
+              <circle cx="36" cy="99.5" r="1.25" fill="currentColor"/>
+            </pattern>
+          </defs>
+          <g class="pattern-light" opacity="0.32">
+            <rect class="pattern-lattice" x="-120" y="-80" width="170%" height="140%" fill="url(#rhHeroLattice)"/>
+            <g fill="none" stroke="currentColor" stroke-linecap="round">
+              <path class="journey-draw" stroke-width="1.35" d="M160 -60 C280 80,40 200,210 340 C380 480,80 600,240 740 C400 880,100 1000,200 1140"/>
+              <path class="journey-draw" stroke-width="1.7" d="M720 -80 C880 60,560 220,760 380 C960 540,580 700,780 840 C980 980,620 1100,720 1220"/>
+              <path class="journey-draw" stroke-width="1.35" d="M1300 -70 C1180 80,1400 230,1220 380 C1040 530,1380 680,1240 830 C1100 980,1360 1100,1280 1220"/>
+            </g>
+          </g>
+        </svg>
+      </div>
+      <div class="beach-ball" id="beachBall" role="img" aria-label="Interactive beach ball. Drag and throw it around the hero.">
+        <span class="ball-hint">Drag me</span>
+        <div class="ball-lift">
+          <div class="ball-sphere">
+            <div class="ball-skin">
+              <span class="ball-shine"></span>
+              <span class="ball-seam"></span>
+            </div>
+          </div>
+        </div>
+        <span class="ball-shadow" aria-hidden="true"></span>
+      </div>
       <div class="hero-inner">
         <div class="container">
           <div class="badge hero-badge">
@@ -441,9 +677,9 @@
       </div>
     </section>
 
-    <section class="section" id="destinations" style="scroll-margin-top:6rem;">
+    <section class="section" id="destinations">
       <div class="container dest-grid">
-        <div class="dest-copy" id="destPin">
+        <div class="dest-copy glass-panel" id="destPin">
           <span class="tag">What we offer</span>
           <h2 class="display section-title">Destinations designed for <em>your next escape</em></h2>
           <p class="lede">Explore participating destinations associated with Royal Holiday vacations. Availability, seasons, and reservation rules vary by membership and destination.</p>
@@ -464,14 +700,14 @@
 
     <section class="section" id="membership">
       <div class="container">
-        <div class="center">
+        <div class="center glass-panel">
           <span class="tag">How it works</span>
           <h2 class="display section-title">Your path to <em>vacation ownership clarity</em></h2>
           <p style="color:var(--ink-soft);">A sanctuary for travelers seeking clear information — not pressure — about vacation-club membership.</p>
         </div>
         <div class="mem-grid">
           <div class="mem-media"><img id="memImg" src="https://admin.storebox.ai/media/f3d54a7d-a615-4245-a1e7-07c89a274444/abac8a57-a07c-42aa-8099-03b6ad9fb08b/pool.jpg" alt="Resort experience" /></div>
-          <div class="mem-copy" id="memCopy">
+          <div class="mem-copy glass-panel" id="memCopy">
             <p style="font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--teal);" id="memNum">Step 1</p>
             <h3 class="display" id="memTitle">Explore membership options</h3>
             <p style="color:var(--ink-soft);" id="memBody">Learn how vacation-club membership can fit the way you travel — destinations, trip frequency, and travel party size.</p>
@@ -488,7 +724,7 @@
 
     <section class="section" id="stories">
       <div class="container">
-        <div class="center">
+        <div class="center glass-panel">
           <span class="tag">Real places</span>
           <h2 class="display section-title">Destinations that start the <em>conversation</em></h2>
           <p style="color:var(--ink-soft);">Member testimonials are pending approval. Until then, explore verified destination highlights.</p>
@@ -673,6 +909,7 @@
       </div>
     </div>
   </footer>
+  </div>
 
   <div class="cookie" id="cookie">
     <p style="margin:0 0 0.75rem;font-size:0.9rem;">We use essential cookies to run this page. Optional analytics only fire with consent.</p>
@@ -921,9 +1158,13 @@
         const open = panel.classList.toggle("open");
         document.body.classList.toggle("menu-open", open);
         menuBtn.setAttribute("aria-expanded", open ? "true" : "false");
+        menuBtn.setAttribute("aria-label", open ? "Close menu" : "Open menu");
       });
       panel.querySelectorAll("a").forEach(a => a.addEventListener("click", () => {
-        panel.classList.remove("open"); document.body.classList.remove("menu-open");
+        panel.classList.remove("open");
+        document.body.classList.remove("menu-open");
+        menuBtn.setAttribute("aria-expanded", "false");
+        menuBtn.setAttribute("aria-label", "Open menu");
       }));
     }
 
@@ -1017,6 +1258,131 @@
       if (cookie) cookie.classList.remove("show");
     });
 
+    /* Interactive beach ball */
+    const bootBeachBall = () => {
+      const hero = document.querySelector(".hero");
+      const wrap = $("beachBall");
+      if (!hero || !wrap) return;
+      const lift = wrap.querySelector(".ball-lift");
+      const sphere = wrap.querySelector(".ball-sphere");
+      const skin = wrap.querySelector(".ball-skin");
+      const shadow = wrap.querySelector(".ball-shadow");
+      const hint = wrap.querySelector(".ball-hint");
+      let x = 0, y = 0, vx = 0, vy = 0, rot = 0, floatT = 0;
+      let dragging = false, moved = 0, raf = 0;
+      let lx = 0, ly = 0, lt = 0;
+
+      const size = () => wrap.offsetWidth || 88;
+      const limits = () => {
+        const pad = 10;
+        const s = size();
+        return { minX: pad, minY: pad, maxX: hero.clientWidth - s - pad, maxY: hero.clientHeight - s - 18 };
+      };
+      const startPos = () => {
+        const b = limits();
+        const wide = hero.clientWidth > 720;
+        x = wide ? Math.max(b.minX, b.maxX - 12) : b.minX + 6;
+        y = wide ? b.minY + hero.clientHeight * 0.32 : Math.min(b.maxY - 8, b.minY + hero.clientHeight * 0.58);
+      };
+      const render = () => {
+        const bob = dragging ? 0 : Math.sin(floatT) * 8;
+        if (hasGsap) {
+          gsap.set(wrap, { x, y });
+          if (lift) gsap.set(lift, { y: bob });
+          if (sphere) gsap.set(sphere, { rotation: rot });
+          if (shadow) gsap.set(shadow, {
+            scaleX: dragging ? 0.72 : 1,
+            opacity: dragging ? 0.22 : 0.42,
+            y: dragging ? 10 : 0
+          });
+        } else {
+          wrap.style.transform = `translate(${x}px, ${y}px)`;
+          if (sphere) sphere.style.transform = `rotate(${rot}deg)`;
+        }
+      };
+      const squash = (axis) => {
+        if (!hasGsap || !skin || reduced) return;
+        const from = axis === "x" ? { scaleX: 0.82, scaleY: 1.12 } : { scaleX: 1.12, scaleY: 0.82 };
+        gsap.fromTo(skin, from, { scaleX: 1, scaleY: 1, duration: 0.32, ease: "elastic.out(1, 0.55)", overwrite: "auto" });
+      };
+      const hop = (force) => { vy = -Math.abs(force); vx += (Math.random() - 0.5) * 2.4; };
+      const hideHint = () => {
+        if (!hint || hint.hidden) return;
+        if (hasGsap && !reduced) gsap.to(hint, { autoAlpha: 0, y: -6, duration: 0.3 });
+        else hint.hidden = true;
+      };
+      const step = () => {
+        if (!dragging) {
+          const b = limits();
+          vy += 0.38;
+          vx *= 0.994;
+          vy *= 0.994;
+          x += vx;
+          y += vy;
+          rot += vx * 0.85;
+          floatT += 0.045;
+          if (x <= b.minX) { x = b.minX; vx = Math.abs(vx) * 0.68; squash("x"); }
+          if (x >= b.maxX) { x = b.maxX; vx = -Math.abs(vx) * 0.68; squash("x"); }
+          if (y <= b.minY) { y = b.minY; vy = Math.abs(vy) * 0.62; squash("y"); }
+          if (y >= b.maxY) {
+            y = b.maxY;
+            if (Math.abs(vy) > 1.6) squash("y");
+            vy = -Math.abs(vy) * 0.62;
+            if (Math.abs(vy) < 1.1) { vy = 0; vx *= 0.9; }
+          }
+        }
+        render();
+        raf = requestAnimationFrame(step);
+      };
+      const onDown = (e) => {
+        dragging = true;
+        moved = 0;
+        wrap.classList.add("is-held");
+        hideHint();
+        wrap.setPointerCapture(e.pointerId);
+        lx = e.clientX; ly = e.clientY; lt = performance.now();
+        vx = 0; vy = 0;
+      };
+      const onMove = (e) => {
+        if (!dragging) return;
+        const b = limits();
+        const dx = e.clientX - lx;
+        const dy = e.clientY - ly;
+        const now = performance.now();
+        const dt = Math.max(8, now - lt);
+        x = Math.min(b.maxX, Math.max(b.minX, x + dx));
+        y = Math.min(b.maxY, Math.max(b.minY, y + dy));
+        vx = dx / dt * 16;
+        vy = dy / dt * 16;
+        rot += dx * 0.8;
+        moved += Math.abs(dx) + Math.abs(dy);
+        lx = e.clientX; ly = e.clientY; lt = now;
+      };
+      const onUp = () => {
+        if (!dragging) return;
+        dragging = false;
+        wrap.classList.remove("is-held");
+        if (moved < 6) hop(10);
+      };
+      startPos();
+      render();
+      if (hasGsap && !reduced) {
+        gsap.from(wrap, { scale: 0, autoAlpha: 0, duration: 0.75, delay: 0.55, ease: "back.out(1.7)" });
+        if (hint) gsap.from(hint, { opacity: 0, y: 8, duration: 0.4, delay: 1.15 });
+      }
+      wrap.addEventListener("pointerdown", onDown);
+      wrap.addEventListener("pointermove", onMove);
+      wrap.addEventListener("pointerup", onUp);
+      wrap.addEventListener("pointercancel", onUp);
+      window.addEventListener("resize", () => {
+        const b = limits();
+        x = Math.min(b.maxX, Math.max(b.minX, x));
+        y = Math.min(b.maxY, Math.max(b.minY, y));
+      });
+      if (!reduced) raf = requestAnimationFrame(step);
+    };
+    bootBeachBall();
+
     /* Motion — GSAP (hero, filmstrip, scroll reveals, hover) */
     const bootMotion = () => {
       if (!hasGsap || reduced) {
@@ -1034,6 +1400,30 @@
         .to(".hero-scroll", { y: 0, opacity: 1, duration: 0.45 }, 0.7);
 
       if (typeof ScrollTrigger !== "undefined") {
+        const canvas = document.getElementById("pageCanvas");
+        const footerEl = document.querySelector("footer");
+        if (canvas && footerEl) {
+          const drawPaths = gsap.utils.toArray(".journey-draw");
+          drawPaths.forEach((path) => {
+            const len = path.getTotalLength();
+            gsap.set(path, { strokeDasharray: len, strokeDashoffset: len * 0.45 });
+          });
+          gsap.set("#scrollPattern .pattern-node", { scale: 0, transformOrigin: "50% 50%" });
+          const range = {
+            trigger: canvas,
+            start: "top top",
+            endTrigger: footerEl,
+            end: "bottom bottom",
+            scrub: 0.85
+          };
+          const patternTl = gsap.timeline({ scrollTrigger: range, defaults: { ease: "none" } });
+          patternTl
+            .to(".pattern-shift, .hero-pattern .pattern-lattice", { y: -220 }, 0)
+            .to(drawPaths, { strokeDashoffset: 0, stagger: 0.04 }, 0)
+            .to("#scrollPattern .pattern-node", { scale: 1, stagger: 0.05 }, 0.12)
+            .fromTo(".hero-pattern .pattern-light", { opacity: 0.32 }, { opacity: 0, duration: 0.2 }, 0)
+            .fromTo("#scrollPattern .pattern-ink", { opacity: 0.42 }, { opacity: 0.58, duration: 0.18 }, 0);
+        }
         gsap.to(".hero-aurora-layer", {
           yPercent: 14, ease: "none",
           scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true }
@@ -1152,7 +1542,9 @@
       if (menuBtn && panel) {
         menuBtn.addEventListener("click", () => {
           if (panel.classList.contains("open")) {
-            gsap.fromTo(panel, { opacity: 0, y: -16 }, { opacity: 1, y: 0, duration: 0.35, ease: "power3.out" });
+            gsap.fromTo(panel, { y: -12 }, { y: 0, opacity: 1, duration: 0.35, ease: "power3.out" });
+          } else {
+            gsap.set(panel, { clearProps: "transform,opacity" });
           }
         });
       }
